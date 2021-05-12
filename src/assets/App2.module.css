@@ -1,0 +1,204 @@
+button{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+}
+
+.main__inner {
+    margin-top: 40px;
+}
+
+.groups{ 
+    margin-top: 10vh;
+}
+
+.group {
+    margin-top: 30px;
+
+}
+
+.group__name {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.option__btn{
+    border: 1px solid gray;
+    border-radius: 8%;
+}
+
+.lesson {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+
+.lesson__number{
+    color: #707070;
+    font-size: 20px;
+    font-weight: 300;
+    width: 35px;
+    height: 35px;
+    /* border: 1px solid #ebefef;
+    border-radius: 50%; */
+    line-height: 35px;
+    text-align: center;
+    /* margin-right: 30px; */
+    /* padding-top: 100%; */
+    margin-bottom: auto;
+    margin-top: auto;
+    /* padding: 3px 9px; */
+    /* border: 1px solid #ebefef; */
+    border-radius: 50%;
+}
+
+
+/* dropdown
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {
+    background-color: #ddd;
+} */
+
+.show {
+    display: block;
+}
+
+/* .col-sm-10{
+    padding: 0;
+    width: 20%;
+} */
+
+.filter-option pull-left{
+    width: 20%;
+}
+
+.option{
+    float: right;
+    display: flex;
+    flex-direction: row;
+    vertical-align: 100%;
+    max-height: 100%;
+    margin-bottom: 5px;
+}
+
+.option__btn{
+    vertical-align: top;
+    padding: 1px;
+    float: right;
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.select__menu{
+    display: flex;
+    flex-direction: column;
+    vertical-align: top;
+}
+
+.select__menu *{
+    margin-left: 3px;
+}
+
+.select__menu .cabinet button{
+    width: 100px;
+}
+
+.select__menu .cabinet{
+    width: 100px;
+}
+
+.select__menu .subgroup{
+
+    margin-bottom: 5px;
+}
+
+.subgroup{
+    display: flex;
+    flex-direction: row;
+}
+
+.subgroup *{
+    margin-right: 3px;
+}
+
+.main__info{
+    display: flex;
+    flex-direction: row;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+label {
+    color: #000;
+    cursor: default;
+    font-weight: normal;
+    line-height: 30px;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+label:before {
+    content: " ";
+    color: #000;
+    display: inline-block;
+    /* шрифт Awesome*/
+    font: 20px/30px FontAwesome;
+    /*margin-right: 15px;*/
+    /* position: relative; */
+    text-align: center;
+    text-indent: 0px;
+    width: 30px;
+    background: #FFF;
+    border: 1px solid #e3e3e3;
+    border-image: initial;
+    vertical-align: middle;
+    border-radius: 3px;
+}
+
+input:checked + label:before {
+    content: url("people.svg");
+}
+
+input:not(:checked) + label:before {
+    content: url("person.svg");
+}
+
+input:disabled + label:before {
+    background: #eee;
+    color: #aaa;
+}
+
+input {
+    height: 20px;
+    margin-bottom: auto;
+    margin-top: 3px;
+}
+

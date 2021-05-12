@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap&subset=cyrillic");
+
+body {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    font-family: "Open Sans";
+    margin: 0;
+    padding: 20px 100px;
+    box-sizing: border-box;
+    color: #363636;
+}
+
+p {
+    margin: 0;
+}
+
+.btn {
+    border-radius: 4px;
+    border: 1px solid #4fc1e9;
+    padding: 8px 14px;
+    color: #4fc1e9;
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn.danger {
+    border: 1px solid #ed5565;
+    color: #ed5565;
+}
+
+.btn:hover {
+    color: #fff;
+    background-color: #4fc1e9;
+}
+
+.btn.danger:hover {
+    background-color: #ed5565;
+}
+
+.field__name {
+    color: #bdbdbd;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.field__input {
+    box-shadow: 0 0 40px rgba(235, 239, 239, 0.75);
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-family: "Open Sans";
+    color: #bdbdbd;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 7px 15px;
+    outline: none;
+    border: none;
+}
+
+.note__input{
+    box-shadow: 0 0 40px rgba(235, 239, 239, 0.75);
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-family: "Open Sans";
+    color: #bdbdbd;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 7px 15px;
+    outline: none;
+    border: none;
+    height: 150px;
+}
+
+
+.field__input::placeholder {
+    color: #bdbdbd;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+}
+
+.header__item {
+    margin-right: 50px;
+}
+
+.header__api {
+    position: relative;
+    cursor: pointer;
+}
+
+.header__api:hover:before {
+    right: 0;
+}
+
+.header__api:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -6px;
+    background: #363636;
+    height: 1px;
+    transition-property: right;
+    transition: all 0.3s ease-out;
+}
+
+.header__logo {
+    width: 100px;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+}
+
+.header__user {
+    padding-left: 35px;
+    position: relative;
+    margin-right: 40px;
+}
+
+.header__user:before {
+    content: "";
+    background-image: url(user.svg);
+    width: 18px;
+    height: 20px;
+    position: absolute;
+    left: 0px;
+    top: 0;
+}
+
+.main {
+    margin-top: 20px;
+}
+
+.main__inner {
+    margin-top: 40px;
+}
+
+.main__title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.main-edit .group {
+    margin-top: 30px;
+}
+.main-edit .group__name {
+    font-size: 20px;
+    font-weight: 600;
+}
+.main-edit .lesson {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 30px;
+}
+.main-edit .lesson__number {
+    color: #707070;
+    font-size: 20px;
+    font-weight: 300;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #ebefef;
+    border-radius: 50%;
+    line-height: 35px;
+    text-align: center;
+    margin-right: 30px;
+}
+
+.main__info{
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.note{
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+
+}
+
+.main-edit .lesson__info {
+    display: grid;
+    grid-template-columns: repeat(2, 3fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 30px;
+    grid-row-gap: 0px;
+}
+
+.main-timetable .main__inner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -5px 0 0 -45px;
+}
+.main-timetable .timetable {
+    margin: 45px 0 0 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(235, 239, 239, 0.75);
+    border-radius: 6px;
+    background-color: #fff;
+    padding: 25px 30px;
+    min-width: 420px;
+}
+.main-timetable .timetable__date {
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 40px;
+    position: relative;
+}
+.main-timetable .timetable__date:before {
+    content: "";
+    background-image: url(calendar.svg);
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    left: 0px;
+    top: 0;
+}
+
+.main-login .login__wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main-login .field {
+    display: block;
+    margin-bottom: 20px;
+}
+.main-login .btn:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+/*DropDown*/

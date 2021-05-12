@@ -1,0 +1,127 @@
+
+.main-overview .timetable-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -30px 0 0 -30px;
+}
+
+.main-overview .timetable {
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px 25px;
+    list-style-type: none;
+    counter-reset: item;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 40px #ebefef;
+    max-width: 380px;
+}
+
+.main-overview .timetable-list .timetable {
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+
+.main-overview .group {
+    position: absolute;
+    /* top: -18px; */
+    top: -40px;
+    left: 0;
+    margin: 0;
+/* color: #bdbdbd;
+font-size: 10px; */
+    font-weight: 600;
+}
+.main-overview .lesson {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 300;
+}
+.main-overview .lesson.icon-close {
+    justify-content: flex-start;
+}
+.main-overview .lesson:not(:last-of-type) {
+    border-bottom: 1px solid #ebefef;
+}
+.main-overview .lesson:before {
+    position: absolute;
+    left: 50%;
+    color: #ed5565;
+    font-size: 20px;
+}
+.main-overview .lesson__inner {
+    flex: 1;
+    margin: 0 20px;
+    word-break: break-word;
+}
+.main-overview .lesson__number {
+    margin-bottom: 15px;
+    padding: 3px 9px;
+    border: 1px solid #ebefef;
+    border-radius: 50%;
+}
+.main-overview .lesson-inner {
+    margin-left: 20px;
+}
+.main-overview .lesson__extra {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: -6px;
+}
+
+.main-overview .lesson__header{
+    height:100%;
+    display: flex;
+    align-items: center;
+}
+
+.main-overview .lesson-inner  .lesson__header:not(:first-child){
+    margin-top: 10px;
+}
+
+.main-overview .lesson__notes .lesson__note:not(:last-child),.lesson__group__note:not(:last-child){
+    margin-bottom: 3px;
+}
+
+.main-overview .lesson__group__note{
+    border: 1px solid red;
+}
+
+.main-overview .lesson__teacher {
+    margin-right: 6px;
+}
+.main-overview .lesson__teacher,
+.main-overview .lesson__room {
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0;
+}
+.main-overview .lesson__teacher ion-icon,
+.main-overview .lesson__room ion-icon {
+    vertical-align: -2px;
+}
+.main-overview .lesson__teacher span,
+.main-overview .lesson__room span {
+    margin-left: 6px;
+}
+
+.main-overview .lesson__name {
+    margin-right: 5px;
+    font-weight: 400;
+}
+
+.main-overview .lesson__note, .lesson__group__note{
+    word-wrap:normal;
+    text-align:center;
+    margin: 0;
+    padding: 1px 10px;
+    border: 1px solid #4fc1e9;
+    border-radius: 4px;
+    font-size: 11px;
+}

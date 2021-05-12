@@ -1,26 +1,66 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+
+  <template v-if='$store.state.token != ""'>
+    <Authentication></Authentication>
+  </template>
+
+  
+
+  <Timetable 
+    v-if="this.activePage == 'Timetable'"
+    @editSheduleOnDate="editSheduleOnDate"
+  ></Timetable>
+  <Edit 
+    v-else-if="this.activePage == 'Edit'"
+    :editDate="this.editDate"  
+    @backToTimetable="backToTimetable"
+  ></Edit>
+
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+  import Timetable from './components/Timetable';
+  import Edit from './components/Edit';
+  import Authentication from './components/Authentication';
+  import {mapActions} from 'vuex';
+  export default {
+    name: "App",
+    components: {
+      Timetable,
+      Edit,
+      Authentication
+    },
+    data() {
+      return {
+        activePage: "Timetable",
+        editDate: "" 
+      }
+    },
+    methods: {
+      ...mapActions(["newEdit"]),
 
-export default {
-  name: "App",
-  components: {
-    HelloWorld,
-  },
-};
+      editSheduleOnDate(date){
+        this.activePage = "Edit";
+        this.editDate = date;
+      },
+      backToTimetable(){
+        this.activePage = "Timetable";
+        this.editDate = "";
+        this.newEdit();
+      }
+    },
+
+    provide() {
+      return {
+        editDate: this.editDate,
+      }
+    },
+  }
+  
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import './assets/App3.module.css';
+@import './assets/App2.module.css';
 </style>
