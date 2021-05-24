@@ -1,21 +1,20 @@
 <template>
   <div class="group">
     <p class="group__name">{{ group }}</p>
+    
     <div 
       class="lesson" 
       v-for="lesson in lessons"
       :key="lesson"
     >
       <p class="lesson__number">{{ lesson  }} </p>
-      <lesson
-        
-        
+      <Lesson 
         :lessonNumber="lesson"
         :group="group"
-        @createCopyOfLessonBefore="createCopyOfLessonBefore"
-        @createCopyOfLessonAfter="createCopyOfLessonAfter"
-        @deleteLesson="deleteLesson"
-      ></lesson>
+        @shiftLessonUp="shiftLessonUp"
+        @shiftLessonDown="shiftLessonDown"
+        @cleaningLesson="cleaningLesson"
+      ></Lesson>
     </div>
   </div>
 </template>
@@ -34,22 +33,29 @@ export default {
   data() {
     return {
       firstLesson: 1,
-      amountLesson: 3,
-      lessonFunction: []
+      amountLesson: 6,
+      lessonFunction : {},
+      clearLesson: {
+        note: "",
+        room: "",
+        employee: "",
+        subject: "",
+        noteSubgroup: "",
+        roomSubgroup: "",
+        employeeSubgroup: "",
+        subjectSubgroup: "",
+        subgroup: false,
+      }
     }
   },
   computed: {
     lessons(){
       let lessons = []
-
-      for (let i = this.firstLesson; i <= this.amountLesson; i++) { 
+      for (let i = this.firstLesson; i <= this.amountLesson + this.firstLesson - 1; i++) { 
         lessons.push(i)
       }
-
-      // this.lessons.push(lesson + 1);
-      // this.lessons.sort();
       return lessons
-    }
+    },
   },
   provide() {
     return{
@@ -58,54 +64,34 @@ export default {
     
   },
   methods: {
-    getLessonFunction(func){
-      this.lessonFunction.push(func)
+    getLessonFunction(getFunc, setFunc, lessonNumber){
+      this.lessonFunction[lessonNumber] = {"getFunc": getFunc, "setFunc":setFunc}
     },
-    createCopyOfLessonAfter(lesson) {
-      // this.lessons.forEach((element, i) => {
-      //   if(lesson + 1 <= this.lessons[i]){
-      //     this.lessons[i] = element + 1;
-      //   }
-      // });
-      // this.lessons.push(lesson + 1);
-      // this.lessons.sort();
-      console.log(lesson);
-      this.amountLesson++;
+
+    shiftLessonUp(lessonNumber){
+      let firstLesson = this.firstLesson
+      for(let i = firstLesson; i < lessonNumber; i++){
+        let lessonInfo = this.lessonFunction[i + 1].getFunc();
+        this.lessonFunction[i].setFunc(lessonInfo);
+      }
+      this.cleaningLesson(lessonNumber)
     },
-    createCopyOfLessonBefore(lesson) {
-      // if (lesson > 1){
-      //   this.lessons.forEach((element, i) => {
-      //   if(lesson - 1 <= this.lessons[i]){
-      //     this.lessons[i] = element - 1;
-      //   }
-      // });
-      // this.lessons.push(lesson - 1);
-      // this.lessons.sort();
-      // }
-      console.log(lesson);
-      if(this.firstLesson > 1 & this.firstLesson == lesson){
-        this.firstLesson--;
+
+    shiftLessonDown(lessonNumber){
+      let lastLesson = this.amountLesson
+      for(let i = lastLesson; i > lessonNumber; i--){
+        let lessonInfo = this.lessonFunction[i - 1].getFunc();
+        this.lessonFunction[i].setFunc(lessonInfo);
       }
-      else if(lesson > 1){
-        this.amountLesson++;
-      }
+      this.cleaningLesson(lessonNumber)
     },
-    deleteLesson(lesson){
-      // const index = this.lessons.indexOf(lesson);
-      // if (index > -1) {
-      //   this.lessons.splice(index, 1);
-      // }
-      console.log(lesson);
-      if(this.firstLesson == lesson){
-        this.firstLesson++;
-      }
-      else{
-        this.amountLesson--;
-      }
-    }
+    cleaningLesson(lessonNumber){
+      this.lessonFunction[lessonNumber].setFunc(this.clearLesson);
+    },
   }
 }
 </script>
 
 <style>
+@import '../assets/Group.module.css';
 </style>

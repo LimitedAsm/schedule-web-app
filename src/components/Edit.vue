@@ -1,15 +1,22 @@
 <template>
-  <EditHeader
+  <Header
+    :typeHeader="'edit'"
     @saveSchedule="saveSchedule"
     @backToTimetable="backToTimetable"
-  ></EditHeader>
+  >
+  </Header>
+
+  <!-- <EditHeader
+    @saveSchedule="saveSchedule"
+    @backToTimetable="backToTimetable"
+  ></EditHeader> -->
 
   <template v-if="$store.state.loading != 0">
     загрузка{{$store.state.loading}}
   </template>
   <div v-else class="groups">
     <template
-      v-for="group in $store.state.groups"
+      v-for="group in $store.getters.getGroups"
       :key="group"
       
     >
@@ -22,13 +29,15 @@
 
 <script>
 import Group from './Group';
-import EditHeader from './EditHeader';
-import {mapActions} from 'vuex';
+// import EditHeader from './EditHeader';
+import {mapActions, mapGetters} from 'vuex';
+import Header from './Header.vue';
 export default {
   name: "Edit",
   components: {
     Group,
-    EditHeader
+    // EditHeader,
+    Header
   },
 
   props: [
@@ -43,19 +52,27 @@ export default {
     return {
       childrenFunction: [],
       informaion: [],
-      date: this.editDate
+      date: this.editDate,
+      copiedLesson: "notOneCopy"
     }
   },
 
   methods: {
-    ...mapActions(["fetchGroup", "fetchTeacher", "fetchSubject", "fetchRoom", "fetchPractice"]),
+    // ...mapActions(["fetchGroup", "fetchTeacher", "fetchSubject", "fetchRoom", "fetchPractice"]),
+    ...mapActions(["fetchAllEditInformation"]),
+    ...mapGetters(["getGroupRefKey"]),
     saveSchedule(){
       this.informaion = [];
-      console.log(this.childrenFunction);
       this.childrenFunction.forEach(element => {
-        this.informaion.push(element())
+        const group = element()[0]
+        const data = element()[1]
+        this.informaion.push({
+          "groupRef_key": this.getGroupRefKey(group),
+          "data": data,
+        })
       });
-
+      console.log(this.informaion);
+      this.backToTimetable();
     },
 
     backToTimetable(){
@@ -67,6 +84,7 @@ export default {
     getChildrenFunction(func){
       this.childrenFunction.push(func)
     },
+    
   },
 
   provide() {
@@ -77,11 +95,12 @@ export default {
   },
 
   async created() {
-    this.fetchGroup();
-    this.fetchTeacher();
-    this.fetchSubject();
-    this.fetchRoom();
-    this.fetchPractice();
+    this.fetchAllEditInformation();
+    // this.fetchGroup();
+    // this.fetchEmployee();
+    // this.fetchSubject();
+    // this.fetchRoom();
+    // this.fetchPractice();
   },
 }
 </script>

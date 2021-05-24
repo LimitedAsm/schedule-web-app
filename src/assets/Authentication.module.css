@@ -1,0 +1,43 @@
+html, body { margin: 0; }
+.authenticationForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+}
+.authenticationButton,
+input[type="text"],
+input[type="password"]{
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 27px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+input[type="text"],
+input[type="password"]{
+    color: rgb(56, 56, 56);
+    width: 30vw;
+    height: 10vh;
+    text-indent: 20px;
+    margin-top: 3px;
+}
+.authenticationButton{
+    color: steelblue;
+    border: 1px solid black;
+    width: 15vw;
+    height: 7vh;
+}
+.authenticationLable{
+    font-size: 27px;
+    /* margin-left: 20px; */
+    margin-bottom: 10px;
+}
+.errorMessage{
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    color: red;
+}

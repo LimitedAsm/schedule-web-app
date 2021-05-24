@@ -7,7 +7,10 @@
       <p class="header__data">{{ this.dateFirst }} - {{ this.dateLast }}</p>
       <div class="header__right">
         <p class="header__user">{{ $store.state.user }}</p>
-        <button class="header__btn danger">Выйти</button>
+        <button 
+            class="header__btn danger"
+            v-on:click="handleLogOut"
+        >Выйти</button>
       </div>
     </div>
   </div>
@@ -15,6 +18,7 @@
 
 
 <script>
+import {mapActions} from 'vuex';
 export default {
   name: "Header",
   inject: [
@@ -29,9 +33,15 @@ export default {
         return this.dates[this.dates.length - 1]
     }
   },
+  methods:{
+    ...mapActions(["logOut"]),
+    handleLogOut(){
+      this.logOut()
+    },
+  }
 }
 </script>
 
 <style>
-
+@import '../assets/Header.module.css';
 </style>

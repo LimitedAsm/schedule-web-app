@@ -1,37 +1,34 @@
 <template>
-
   <div class="lesson__info">
     <div class="main__info">
       <div class="select__menu">
         <div class="subgroup main__group">
           <input
-            list="subjects"
+            list="subject"
             placeholder="Предмет"
             v-model="lesson.subject"
           />
-          <datalist id="subjects" title="Предмет">
+          <datalist id="subject" title="Предмет">
             <option 
-              v-for="subjects in $store.state.subjects"
-              :key="subjects"
+              v-for="subject in $store.getters.getSubjects"
+              :key="subject"
             >
-              {{ subjects }}
+              {{ subject }}
             </option>
           </datalist>
-
           <input
-            list="teacher"
+            list="employee"
             placeholder="Преподаватель"
-            v-model="lesson.teacher"
+            v-model="lesson.employee"
           />
-          <datalist id="teacher" title="Преподаватель">
+          <datalist id="employee" title="Преподаватель">
             <option 
-              v-for="teacher in $store.state.teachers"
-              :key="teacher"
+              v-for="employee in $store.getters.getEmployees"
+              :key="employee"
             >
-              {{ teacher }}
+              {{ employee }}
             </option>
           </datalist>
-
           <input 
             list="room" 
             placeholder="Кабинет" 
@@ -39,46 +36,45 @@
           />
           <datalist id="room" title="Кабинет">
             <option 
-              v-for="room in $store.state.rooms"
+              v-for="room in $store.getters.getRooms"
               :key="room"
             >
               {{ room }}
             </option>
           </datalist>
-          <input 
+          <!-- <input 
             list="идентификатор5" 
             placeholder="Заметки" 
             v-model="lesson.note"
-          />
+          /> -->
         </div>
-
-        <template v-if='subgroup'>
+        <template v-if='lesson.subgroup'>
           <div class="subgroup main__group">
             <input
-              list="subjects"
+              list="subject"
               placeholder="Предмет"
               v-model="lesson.subjectSubgroup"
             />
-            <datalist id="subjects" title="Предмет">
+            <datalist id="subject" title="Предмет">
               <option 
-                v-for="subjects in $store.state.subjects"
-                :key="subjects"
+                v-for="subject in $store.getters.getSubjects"
+                :key="subject"
               >
-                {{ subjects }}
+                {{ subject }}
               </option>
             </datalist>
 
             <input
               list="teacher"
               placeholder="Преподаватель"
-              v-model="lesson.teacherSubgroup"
+              v-model="lesson.employeeSubgroup"
             />
             <datalist id="teacher" title="Преподаватель">
               <option 
-                v-for="teacher in $store.state.teachers"
-                :key="teacher"
+                v-for="employee in $store.getters.getEmployees"
+                :key="employee"
               >
-                {{ teacher }}
+                {{ employee }}
               </option>
             </datalist>
 
@@ -89,68 +85,71 @@
             />
             <datalist id="room" title="Кабинет">
               <option 
-                v-for="room in $store.state.rooms"
+                v-for="room in $store.getters.getRooms"
                 :key="room"
               >
                 {{ room }}
               </option>
             </datalist>
-            <input 
-              list="идентификатор5" 
+            <!-- <input  
               placeholder="Заметки" 
               v-model="lesson.noteSubgroup"
-            />
+            /> -->
           </div>
         </template>
       </div>    
       
       <div class="option">
-        <input
-          v-bind:id="group + lesson"
+        <button 
+          class="option__btn"
+          v-on:click="handleSubgroupButton"
+        >
+          <input
+          v-bind:id="group + lessonNumber"
           type="checkbox"
           v-model="lesson.subgroup"
-        />
-        <label 
-          v-bind:for="group + lesson"
-        ></label>
-
-
-        <button type="button" class="option__btn del">
-          <img src="../assets/arrow-up.svg" /><img
-            src="../assets/file.svg"
-          />
+          >
+          По подгруппам
         </button>
-        <button type="button" class="option__btn del">
-          <img src="../assets/arrow-down.svg" /><img
-            src="../assets/file.svg"
-          />
+        <!-- <label 
+          v-bind:for="group + lessonNumber"
+        ></label> -->
+
+        <button 
+          type="button" 
+          class="option__btn del"
+          v-on:click="handleInsertLesson"
+        >
+        вставка
         </button>
+      
+        <button 
+          type="button" 
+          class="option__btn del"
+          v-on:click="handleCopyLesson" 
+        > 
+        копия
+        </button> 
+      
         <button 
           type="button" 
           class="option__btn del addDown"
-          v-on:click="createCopyOfLessonBefore"
-        >
-          <img src="../assets/arrow-up.svg" /><img
-            src="../assets/file-code.svg"
-          />
+          v-on:click="shiftLessonUp"
+        >Сдвиг вверх
         </button>
-
+      
         <button
           type="button"
           class="option__btn"
-          v-on:click="createCopyOfLessonAfter"
-        >
-          <img src="../assets/arrow-down.svg" /><img
-            src="../assets/file-code.svg"
-          />
+          v-on:click="shiftLessonDown"
+        >Сдвиг вниз
         </button>
 
         <button 
           type="button" 
           class="option__btn"
-          v-on:click="deleteLesson"  
-        >
-          <img src="../assets/trash.svg" />
+          v-on:click="handleCleaningLesson"  
+        >Очистка
         </button>
       </div>
     </div>
@@ -159,6 +158,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: "Lesson",
   props: [
@@ -166,9 +167,9 @@ export default {
     "group"
   ],
   emits: [
-    "createCopyOfLessonBefore",
-    "createCopyOfLessonAfter",
-    "deleteLesson"  
+    "shiftLessonUp",
+    "shiftLessonDown",
+    "cleaningLesson"  
   ],
   inject: [
     "getLessonFunction",
@@ -176,94 +177,79 @@ export default {
   ],
   data() {
     return {
-      lesson:{
+      lesson: {
         note: "",
         room: "",
-        teacher: "",
+        employee: "",
         subject: "",
-
         noteSubgroup: "",
         roomSubgroup: "",
-        teacherSubgroup: "",
+        employeeSubgroup: "",
         subjectSubgroup: "",
-
         subgroup: false,
-      }
+      },
+
     }
   },
 
   methods: {
-    createCopyOfLessonAfter(){
-      this.$emit('createCopyOfLessonAfter', this.lesson);
+    ...mapActions(["copyLesson"]),
+    handleSubgroupButton(){
+      this.lesson.subgroup = !this.lesson.subgroup 
     },
-    createCopyOfLessonBefore(){
-      this.$emit('createCopyOfLessonBefore', this.lesson);
+    handleInsertLesson(){
+      if(this.$store.getters.getCopiedLesson != "notOneCopy"){
+        this.lesson = this.$store.getters.getCopiedLesson;
+      }
     },
-    deleteLesson(){
-      this.note = "",
-      this.room = "",
-      this.teacher = "",
-      this.subject = "",
-
-      this.noteSubgroup = "",
-      this.roomSubgroup = "",
-      this.teacherSubgroup = "",
-      this.subjectSubgroup = "",
-
-      this.subgroup = false,
-      this.$emit('deleteLesson', this.lesson);
+    handleCopyLesson(){
+      this.copyLesson(this.lesson)
+    },
+    
+    shiftLessonUp(){
+      this.$emit('shiftLessonUp', this.lessonNumber);
+    },
+    shiftLessonDown(){
+      this.$emit('shiftLessonDown', this.lessonNumber);
+    },
+    handleCleaningLesson(){
+      this.$emit('cleaningLesson', this.lessonNumber);
     },
     returnChildrenFunction(){
       let main = {
-        note: this.note,
-        room: this.room,
-        teacher: this.teacher,
-        subject: this.subject,
+        note: this.lesson.note,
+        room: this.lesson.room,
+        employee: this.lesson.employee,
+        subject: this.lesson.subject,
       }
 
       let sub = {
-        noteSubgroup: this.noteSubgroup,
-        roomSubgroup: this.roomSubgroup,
-        teacherSubgroup: this.teacherSubgroup,
-        subjectSubgroup: this.subjectSubgroup,
+        subgroup: this.lesson.subgroup,
+        noteSubgroup: this.lesson.noteSubgroup,
+        roomSubgroup: this.lesson.roomSubgroup,
+        employeeSubgroup: this.lesson.employeeSubgroup,
+        subjectSubgroup: this.lesson.subjectSubgroup,
       }
 
-      let groupInfo = {
-        subgroup: this.subgroup, 
-        group: this.group
-      }
-
-      if (this.subgroup){
-        return{ 
-          ...main,
-          ...sub,
-          ...groupInfo
-        }
+      if (this.lesson.subgroup){
+        return([this.group,{...main, ...sub}])
       }
       else{
-        return{ 
-          ...main,
-          ...groupInfo
-        }
+        return([this.group,{...main}])
       }
     },
-    returnLessonFunction:{
-      get(){
-        this.lesson;
-      },
-      set(lesson){
-        this.lesson = lesson;
-      }
+    returnLessonFunctionGet(){
+      let lesson = {...this.lesson}
+      return lesson;
+    },
+    returnLessonFunctionSet(lesson){
+      this.lesson = {...lesson};
     }
   }, 
   created(){ 
     this.getChildrenFunction(this.returnChildrenFunction),
-    this.getLessonFunction(this.returnLessonFunction)
+    this.getLessonFunction(this.returnLessonFunctionGet, this.returnLessonFunctionSet, this.lessonNumber)
   }, 
-  
-  // beforeUnmount(){
-
-  // }
 }
 </script>
 

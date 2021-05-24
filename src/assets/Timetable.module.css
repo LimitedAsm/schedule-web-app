@@ -1,10 +1,17 @@
 .main-timetable .main__inner {
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
-    margin: -5px 0 0 -45px;
+    /* margin: -5px 0 0 -45px; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+    /* flex-direction:row; */
+    /* height: 90vh; */
 }
 .main-timetable .timetable {
-    margin: 45px 0 0 45px;
+    margin: 0 0 4vh 3vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,21 +19,21 @@
     border-radius: 6px;
     background-color: #fff;
     padding: 25px 30px;
-    min-width: 420px;
+    min-width: 20vw;
 }
 .main-timetable .timetable__date {
     font-size: 20px;
     font-weight: 600;
-    padding-left: 40px;
-    position: relative;
+    /* padding-left: 40px; */
+    /* position: relative; */
 }
 .main-timetable .timetable__date:before {
-    content: "";
-    background-image: url(calendar.svg);
-    width: 27px;
-    height: 27px;
-    position: absolute;
-    left: 0;
-    top: 0;
+    /* content: url(calendar.svg); */
+    /* background-image: url(calendar.svg); */
+    /* width: 27px;
+    height: 27px; */
+    /* position: absolute; */
+    /* left: 0;
+    top: 0; */
 }
 

@@ -1,13 +1,10 @@
 <template>
 
-  <template v-if='$store.state.token != ""'>
-    <Authentication></Authentication>
-  </template>
-
-  
-
+  <Authentication
+    v-if="$store.state.token == ''"
+  ></Authentication>
   <Timetable 
-    v-if="this.activePage == 'Timetable'"
+    v-else-if="this.activePage == 'Timetable'"
     @editSheduleOnDate="editSheduleOnDate"
   ></Timetable>
   <Edit 
@@ -15,7 +12,6 @@
     :editDate="this.editDate"  
     @backToTimetable="backToTimetable"
   ></Edit>
-
 </template>
 
 <script>
@@ -56,11 +52,8 @@
       }
     },
   }
-  
-
 </script>
 
 <style>
-@import './assets/App3.module.css';
-@import './assets/App2.module.css';
+@import './assets/Main.module.css';
 </style>
