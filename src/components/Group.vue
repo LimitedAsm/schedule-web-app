@@ -36,11 +36,11 @@ export default {
       amountLesson: 6,
       lessonFunction : {},
       clearLesson: {
-        note: "",
+        // note: "",
         room: "",
         employee: "",
         subject: "",
-        noteSubgroup: "",
+        // noteSubgroup: "",
         roomSubgroup: "",
         employeeSubgroup: "",
         subjectSubgroup: "",

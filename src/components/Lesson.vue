@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: "Lesson",
@@ -173,16 +173,17 @@ export default {
   ],
   inject: [
     "getLessonFunction",
-    "getChildrenFunction"
+    "getChildrenFunction",
+    "schedule"
   ],
   data() {
     return {
       lesson: {
-        note: "",
+        // note: "",
         room: "",
         employee: "",
         subject: "",
-        noteSubgroup: "",
+        // noteSubgroup: "",
         roomSubgroup: "",
         employeeSubgroup: "",
         subjectSubgroup: "",
@@ -194,6 +195,7 @@ export default {
 
   methods: {
     ...mapActions(["copyLesson"]),
+    ...mapGetters(["getSchedule", "getSubjectByRefKey", "getGroupRefKey", "getEmployeeByRefKey", "getRoomByRefKey"]),
     handleSubgroupButton(){
       this.lesson.subgroup = !this.lesson.subgroup 
     },
@@ -215,28 +217,17 @@ export default {
     handleCleaningLesson(){
       this.$emit('cleaningLesson', this.lessonNumber);
     },
-    returnChildrenFunction(){
-      let main = {
-        note: this.lesson.note,
-        room: this.lesson.room,
-        employee: this.lesson.employee,
-        subject: this.lesson.subject,
-      }
-
-      let sub = {
-        subgroup: this.lesson.subgroup,
-        noteSubgroup: this.lesson.noteSubgroup,
-        roomSubgroup: this.lesson.roomSubgroup,
-        employeeSubgroup: this.lesson.employeeSubgroup,
-        subjectSubgroup: this.lesson.subjectSubgroup,
-      }
-
-      if (this.lesson.subgroup){
-        return([this.group,{...main, ...sub}])
-      }
-      else{
-        return([this.group,{...main}])
-      }
+    returnChildrenFunctionGet(){
+        return(
+          {
+            lessonNumber: this.lessonNumber,
+            group: this.group,
+            ...this.lesson
+          }
+        )
+    },
+    returnChildrenFunctionSet(lesson){
+      this.lesson = {...lesson};
     },
     returnLessonFunctionGet(){
       let lesson = {...this.lesson}
@@ -247,9 +238,38 @@ export default {
     }
   }, 
   created(){ 
-    this.getChildrenFunction(this.returnChildrenFunction),
+    this.getChildrenFunction(this.returnChildrenFunctionGet, this.returnChildrenFunctionSet),
     this.getLessonFunction(this.returnLessonFunctionGet, this.returnLessonFunctionSet, this.lessonNumber)
+    
   }, 
+  mounted(){
+    if(this.getSchedule() != "noSchedule"){
+      this.getSchedule().forEach(schedule => {
+        let lesson = this.lesson
+        if((schedule.groupKey == this.getGroupRefKey()(this.group)) && (schedule.lessonNumber == this.lessonNumber)){
+          if(schedule.subgroup == 0){
+            lesson.subgroup = false
+            lesson.room = this.getRoomByRefKey()(schedule.roomKey)
+            lesson.employee = this.getEmployeeByRefKey()(schedule.teacherKey)
+            lesson.subject = this.getSubjectByRefKey()(schedule.subjectKey)
+          }
+          else if(schedule.subgroup == 1){
+            lesson.subgroup = true
+            lesson.room = this.getRoomByRefKey()(schedule.roomKey)
+            lesson.employee = this.getEmployeeByRefKey()(schedule.teacherKey)
+            lesson.subject = this.getSubjectByRefKey()(schedule.subjectKey)
+          }
+          else if(schedule.subgroup == 2){
+            lesson.subgroup = true
+            lesson.roomSubgroup = this.getRoomByRefKey()(schedule.roomKey)
+            lesson.employeeSubgroup = this.getEmployeeByRefKey()(schedule.teacherKey)
+            lesson.subjectSubgroup = this.getSubjectByRefKey()(schedule.subjectKey)
+          }
+        }
+        this.lesson = {...lesson}
+      });      
+    }
+  }
 }
 </script>
 

@@ -9,7 +9,8 @@
   ></Timetable>
   <Edit 
     v-else-if="this.activePage == 'Edit'"
-    :editDate="this.editDate"  
+    :editDate="this.editDate"
+    
     @backToTimetable="backToTimetable"
   ></Edit>
 </template>
@@ -29,19 +30,26 @@
     data() {
       return {
         activePage: "Timetable",
-        editDate: "" 
+        editDate: "",
+        // schedule: "" 
       }
     },
     methods: {
-      ...mapActions(["newEdit"]),
-
+      ...mapActions(["newEdit", "fetchSchedule"]),
+      // ...mapGetters(["getHost", "getToken"]),
       editSheduleOnDate(date){
-        this.activePage = "Edit";
+
+
+        this.fetchSchedule(date)
+        
+        
         this.editDate = date;
+        this.activePage = "Edit";
       },
       backToTimetable(){
         this.activePage = "Timetable";
         this.editDate = "";
+        // this.schedule = "";
         this.newEdit();
       }
     },
@@ -49,6 +57,7 @@
     provide() {
       return {
         editDate: this.editDate,
+        schedule: this.schedule
       }
     },
   }

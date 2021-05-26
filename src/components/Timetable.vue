@@ -85,7 +85,8 @@ export default {
   },
   provide() {
     return {
-      dates: this.getDates
+      dates: this.getDates,
+      date: ""
     }
   },
 }
