@@ -21,22 +21,27 @@ export default createStore({
             });
         },
         async fetchLogin(context, user){
-        const res = await fetch(
-            this.getters.getHost + 'user/login',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'username': user.username, 
-                    'password': user.password
-                })
+            const res = await fetch(
+                this.getters.getHost + 'user/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'username': user.username, 
+                        'password': user.password
+                    })
+                }
+            )
+            const tokenJSON = await res.json();
+            if(tokenJSON.data == "Auth failed"){
+                context.commit('updateErrorMessage', "Неверный логин или пароль");
             }
-        )
-        const tokenJSON = await res.json();
-        const token = tokenJSON.data.token
-        context.commit('updateToken', [token,user.username]);
+            else{
+                const token = tokenJSON.data.token
+                context.commit('updateToken', [token,user.username]);
+            }
         },   
         newEdit(context){  
             context.commit('updateEdit');
@@ -48,10 +53,13 @@ export default createStore({
             context.commit('updateCopiedLesson', lesson)
         },
         async fetchSchedule(context, date){
+
             const dateISO = new Date(date).toISOString()
             const fetchDate = dateISO.slice(0, -14)
-            // console.log(fetchDate)
             // const fetchDate = dateISO.slice(0, -19) + dateISO.slice(-16, -14) + dateISO.slice(-20, -17) 
+            // const fetchDate = "2012-12-05"
+            console.log(dateISO)
+            
             const res = await fetch(
                 this.getters.getHost + 'schedule/get?date=' + fetchDate,
                 {

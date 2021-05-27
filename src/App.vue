@@ -1,7 +1,9 @@
 <template>
 
+  <Overview v-if="this.activePage == 'Overview'"></Overview>
+
   <Authentication
-    v-if="$store.state.token == ''"
+    v-else-if="$store.state.token == ''"
   ></Authentication>
   <Timetable 
     v-else-if="this.activePage == 'Timetable'"
@@ -19,16 +21,19 @@
   import Timetable from './components/Timetable';
   import Edit from './components/Edit';
   import Authentication from './components/Authentication';
+  import Overview from './components/Overview';
   import {mapActions} from 'vuex';
   export default {
     name: "App",
     components: {
       Timetable,
       Edit,
-      Authentication
+      Authentication,
+      Overview,
     },
     data() {
       return {
+        // activePage: "Timetable",
         activePage: "Timetable",
         editDate: "",
         // schedule: "" 

@@ -61,20 +61,49 @@ export default {
       let date = new Date(this.date)
       let schedule  = [];
       const scheduleDate = date.toISOString().slice(0, -5)
+      console.log(scheduleDate)
       let informaion = {}
       let lineNumber = 0
       this.childrenFunction.forEach(element => {
         const lessonInfo = element.getFunc() ;
         lineNumber += 1
+        let group = this.getGroupRefKey()(lessonInfo.group)
+        let subject = this.getSubjectRefKey()(lessonInfo.subject)
+        let employee = this.getEmployeeRefKey()(lessonInfo.employee)
+        let room = this.getRoomRefKey()(lessonInfo.room)
+        let subjectSubgroup = this.getSubjectRefKey()(lessonInfo.subjectSubgroup)
+        let employeeSubgroup = this.getEmployeeRefKey()(lessonInfo.employeeSubgroup)
+        let roomSubgroup = this.getRoomRefKey()(lessonInfo.roomSubgroup) 
+        if(group == ""){
+          group = "00000000-0000-0000-0000-000000000000"
+        }
+        if(subject == ""){
+          subject = "00000000-0000-0000-0000-000000000000"
+        }
+        if(employee == ""){
+          employee = "00000000-0000-0000-0000-000000000000"
+        }
+        if(room == ""){
+          room = "00000000-0000-0000-0000-000000000000"
+        }
+        if(subjectSubgroup == ""){
+          subjectSubgroup = "00000000-0000-0000-0000-000000000000"
+        }
+        if(employeeSubgroup == ""){
+          employeeSubgroup = "00000000-0000-0000-0000-000000000000"
+        }
+        if(roomSubgroup == ""){
+          roomSubgroup = "00000000-0000-0000-0000-000000000000"
+        }
         let lesson = {
-          "groupKey": this.getGroupRefKey()(lessonInfo.group),
+          "groupKey": group,
           "lineNumber": lineNumber.toString(),
           "subgroup": 0,
           "lessonNumber": lessonInfo.lessonNumber,
-          "subjectKey": this.getSubjectRefKey()(lessonInfo.subject),
+          "subjectKey": subject,
           "subjectType": "StandardODATA.Catalog_Дисциплины",
-          "teacherKey": this.getEmployeeRefKey()(lessonInfo.employee),
-          "roomKey": this.getRoomRefKey()(lessonInfo.room),
+          "teacherKey": employee,
+          "roomKey": room,
         } 
         if(lessonInfo.subgroup == false){
           schedule.push(lesson)
@@ -82,16 +111,16 @@ export default {
 
         else{
           lineNumber += 1
-          lesson.Подгруппа = 1;
+          lesson.subgroup = 1;
           let lessonSubgoupTwo = {
-            "groupKey":  this.getGroupRefKey()(lessonInfo.group),
+            "groupKey":  group,
             "lineNumber": lineNumber.toString(),
             "subgroup": 2,
             "lessonNumber": lessonInfo.lessonNumber,
-            "subjectKey": this.getSubjectRefKey()(lessonInfo.subjectSubgroup),
+            "subjectKey": subjectSubgroup,
             "subjectType": "StandardODATA.Catalog_Дисциплины",
-            "teacherKey": this.getEmployeeRefKey()(lessonInfo.employeeSubgroup),
-            "roomKey": this.getRoomRefKey()(lessonInfo.roomSubgroup),
+            "teacherKey": employeeSubgroup,
+            "roomKey": roomSubgroup,
           } 
           schedule.push(lesson)
           schedule.push(lessonSubgoupTwo)
@@ -104,7 +133,6 @@ export default {
         }
       });
       // console.log(informaion);
-      
       await fetch(
         this.getHost() + 'schedule/create',
         {
@@ -116,7 +144,6 @@ export default {
           body: JSON.stringify(informaion)
         }
       )
-      
       this.backToTimetable();
     },
     backToTimetable(){
@@ -126,7 +153,6 @@ export default {
     getChildrenFunction(getFunc, setFunc){
       this.childrenFunction.push({"getFunc": getFunc, "setFunc":setFunc})
     },
-    
   },
   provide() {
     return {

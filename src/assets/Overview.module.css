@@ -122,3 +122,9 @@
     border-radius: 4px;
     font-size: 11px;
 }
+
+.person-img,
+.location-sharp-img{
+    height: 1em;
+    width: 1em;
+}

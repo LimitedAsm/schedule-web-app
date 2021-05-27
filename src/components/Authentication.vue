@@ -11,7 +11,7 @@
 <script>
 import { mapActions} from "vuex";
 export default {
-  name: "authentication",
+  name: "Authentication",
   data() {
     return {
       user: {
