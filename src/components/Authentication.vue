@@ -20,21 +20,7 @@ export default {
       },
     };
   },
-  // computed: {
-  //   errorMessage(){
-  //     console.log(this.getErrorMessage)
-  //     console.log("daw")
-  //     if(this.getErrorMessage == "serverDie"){
-  //       return("Сервер недоступен") 
-  //     }
-  //     else{
-  //       return("")
-  //     }
-
-  //   }
-  // },
   methods: {
-    // ...mapGetters(["getErrorMessage"]),
     ...mapActions(["fetchLogin"]),
     handleAuthorization() {
       this.fetchLogin(this.user);

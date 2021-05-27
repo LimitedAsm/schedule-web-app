@@ -179,17 +179,14 @@ export default {
   data() {
     return {
       lesson: {
-        // note: "",
         room: "",
         employee: "",
         subject: "",
-        // noteSubgroup: "",
         roomSubgroup: "",
         employeeSubgroup: "",
         subjectSubgroup: "",
         subgroup: false,
       },
-
     }
   },
 
@@ -207,7 +204,6 @@ export default {
     handleCopyLesson(){
       this.copyLesson(this.lesson)
     },
-    
     shiftLessonUp(){
       this.$emit('shiftLessonUp', this.lessonNumber);
     },
@@ -218,13 +214,13 @@ export default {
       this.$emit('cleaningLesson', this.lessonNumber);
     },
     returnChildrenFunctionGet(){
-        return(
-          {
-            lessonNumber: this.lessonNumber,
-            group: this.group,
-            ...this.lesson
-          }
-        )
+      return(
+        {
+          lessonNumber: this.lessonNumber,
+          group: this.group,
+          ...this.lesson
+        }
+      )
     },
     returnChildrenFunctionSet(lesson){
       this.lesson = {...lesson};
@@ -240,7 +236,6 @@ export default {
   created(){ 
     this.getChildrenFunction(this.returnChildrenFunctionGet, this.returnChildrenFunctionSet),
     this.getLessonFunction(this.returnLessonFunctionGet, this.returnLessonFunctionSet, this.lessonNumber)
-    
   }, 
   mounted(){
     if(this.getSchedule() != "noSchedule"){

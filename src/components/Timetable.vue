@@ -25,24 +25,14 @@
 
 <script>
 import Header from './Header.vue';
-// import TimetableHeader from './TimetableHeader';
 export default {
   name: "Timetable",
   components: {
-    // TimetableHeader,
     Header
   },
-  
   emits: [
     "editSheduleOnDate"
   ],
-  
-  // data() {
-  //   return {
-  //     dates: ["26.04.2021","27.04.2021","28.04.2021","29.04.2021","30.04.2021","01.05.2021"],
-  //   }
-  // },
-
   computed:{
     getDates(){
       let now = new Date();

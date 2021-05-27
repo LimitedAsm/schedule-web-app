@@ -5,12 +5,6 @@
     @backToTimetable="backToTimetable"
   >
   </Header>
-
-  <!-- <EditHeader
-    @saveSchedule="saveSchedule"
-    @backToTimetable="backToTimetable"
-  ></EditHeader> -->
-
   <template v-if="$store.state.loading != 0">
     загрузка{{$store.state.loading}}
   </template>
@@ -18,7 +12,6 @@
     <template
       v-for="group in $store.getters.getGroups"
       :key="group"
-      
     >
       <Group
       :group="group"
@@ -37,23 +30,18 @@ export default {
     Group,
     Header
   },
-
   props: [
     "editDate",
-    // "schedule"
   ],
-
   emits: [
     "backToTimetable"
   ],
-
   data() {
     return {
       childrenFunction: [],
       date: this.editDate,
     }
   },
-
   methods: {
     ...mapActions(["fetchAllEditInformation"]),
     ...mapGetters(["getGroupRefKey", "getRoomRefKey", "getSubjectRefKey", "getEmployeeRefKey", "getHost", "getToken"]),
@@ -61,7 +49,7 @@ export default {
       let date = new Date(this.date)
       let schedule  = [];
       const scheduleDate = date.toISOString().slice(0, -5)
-      console.log(scheduleDate)
+      // console.log(scheduleDate)
       let informaion = {}
       let lineNumber = 0
       this.childrenFunction.forEach(element => {
@@ -108,7 +96,6 @@ export default {
         if(lessonInfo.subgroup == false){
           schedule.push(lesson)
         }
-
         else{
           lineNumber += 1
           lesson.subgroup = 1;
@@ -125,7 +112,6 @@ export default {
           schedule.push(lesson)
           schedule.push(lessonSubgoupTwo)
         }
-
         informaion = {
           "scheduleDate": scheduleDate,
           "alarmsScheduleKey": "f0c7b75a-a488-4d9b-a175-f8374de43184", 
@@ -164,8 +150,6 @@ export default {
   async created() {
     this.fetchAllEditInformation();
   },
-  // async mounted(){ 
-  // }
 }
 </script>
 

@@ -38,7 +38,6 @@
 <script>
 import {mapActions} from 'vuex';
 export default {
-  
   name: "Header",
   emits: [
     "saveSchedule",
@@ -72,7 +71,6 @@ export default {
       this.$emit("backToTimetable")
     }
   },
-  
 }
 </script>
 

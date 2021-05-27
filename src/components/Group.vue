@@ -1,7 +1,6 @@
 <template>
   <div class="group">
     <p class="group__name">{{ group }}</p>
-    
     <div 
       class="lesson" 
       v-for="lesson in lessons"
@@ -26,7 +25,6 @@ export default {
   props: [
     'group'
   ],
-  
   components: {
     Lesson
   },
@@ -36,11 +34,9 @@ export default {
       amountLesson: 6,
       lessonFunction : {},
       clearLesson: {
-        // note: "",
         room: "",
         employee: "",
         subject: "",
-        // noteSubgroup: "",
         roomSubgroup: "",
         employeeSubgroup: "",
         subjectSubgroup: "",
@@ -61,13 +57,11 @@ export default {
     return{
       getLessonFunction: this.getLessonFunction
     }
-    
   },
   methods: {
     getLessonFunction(getFunc, setFunc, lessonNumber){
       this.lessonFunction[lessonNumber] = {"getFunc": getFunc, "setFunc":setFunc}
     },
-
     shiftLessonUp(lessonNumber){
       let firstLesson = this.firstLesson
       for(let i = firstLesson; i < lessonNumber; i++){
@@ -76,7 +70,6 @@ export default {
       }
       this.cleaningLesson(lessonNumber)
     },
-
     shiftLessonDown(lessonNumber){
       let lastLesson = this.amountLesson
       for(let i = lastLesson; i > lessonNumber; i--){

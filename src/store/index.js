@@ -20,8 +20,34 @@ export default createStore({
                 context.commit(update, information);
             });
         },
+        // async fetchLogin(context, user){
+        //     const res = await fetch(
+        //         this.getters.getHost + 'user/login',
+        //         {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({
+        //                 'username': user.username, 
+        //                 'password': user.password
+        //             })
+        //         }
+        //     )
+        //     const tokenJSON = await res.json();
+        //     if(tokenJSON.data == "Auth failed"){
+        //         context.commit('updateErrorMessage', "Неверный логин или пароль");
+        //     }
+        //     else{
+        //         const token = tokenJSON.data.token
+        //         context.commit('updateToken', [token,user.username]);
+        //     }
+
+
+        // },   
         async fetchLogin(context, user){
-            const res = await fetch(
+            // const res = 
+            await fetch(
                 this.getters.getHost + 'user/login',
                 {
                     method: 'POST',
@@ -34,15 +60,24 @@ export default createStore({
                     })
                 }
             )
-            const tokenJSON = await res.json();
-            if(tokenJSON.data == "Auth failed"){
-                context.commit('updateErrorMessage', "Неверный логин или пароль");
-            }
-            else{
-                const token = tokenJSON.data.token
-                context.commit('updateToken', [token,user.username]);
-            }
-        },   
+            .then(
+                async response => {
+                    const tokenJSON = await response.json();
+                    if(tokenJSON.data == "Auth failed"){
+                        context.commit('updateErrorMessage', "Неверный логин или пароль");
+                    }
+                    else{
+                        const token = tokenJSON.data.token
+                        context.commit('updateToken', [token,user.username]);
+                    }
+                },
+
+                reject => {
+                    console.log('Error: ', reject)
+                    context.commit('updateErrorMessage', "Сервер недоступен обратитесь к системному администратору");
+                }
+            );
+        },
         newEdit(context){  
             context.commit('updateEdit');
         },
