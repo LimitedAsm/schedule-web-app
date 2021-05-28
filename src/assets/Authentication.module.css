@@ -12,7 +12,8 @@ input[type="password"]{
     padding: 2px;
     border: 1px solid;
     border-radius: 8px;
-    font-size: 27px;
+    font-size: 5vh;
+    /* font-size: 27px; */
     margin-bottom: 10px;
     box-sizing: border-box;
 }
@@ -25,19 +26,27 @@ input[type="password"]{
     margin-top: 3px;
 }
 .authenticationButton{
-    color: steelblue;
+    /* color: steelblue; */
     border: 1px solid black;
     width: 15vw;
-    height: 7vh;
+    height: 10vh;
+    padding: 4px 4px;
+    color: #4fc1e9;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
 }
+
+.authenticationButton:hover {
+    color: #fff;
+    background-color: #4fc1e9;
+    border: none
+}
+
 .authenticationLable{
     font-size: 27px;
-    /* margin-left: 20px; */
     margin-bottom: 10px;
 }
 .errorMessage{
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     color: red;
 }

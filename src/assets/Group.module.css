@@ -1,13 +1,62 @@
 .groups{ 
     margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 
 .group {
     margin-top: 30px;
-
+    width: min(1000px, 90vw);
+    /* width: 90vw; */
+    /* s */
 }
 
 .group__name {
     font-size: 20px;
     font-weight: 600;
+}
+
+.grid__lesson{
+    display: grid;
+    /* width: min(1000px, 70%); */
+    grid-column-gap: 1vw;
+    grid-row-gap: 3px;
+    grid-template-columns: 30fr 3fr 2fr 2fr 3fr 3fr 3fr;
+}
+
+.grid__option{
+    font-size: 13px;
+    /* display: flex;
+    flex-direction: column;
+    display: table-cell; */
+    display: flex;
+    align-items: flex-end;
+    vertical-align: text-bottom;
+    text-align: center;
+}
+.group__name{
+    max-width: 10vw;
+    grid-column: 1;
+}
+
+.onSubgroup{
+    grid-column: 2;
+}
+.onPaste{
+    grid-column: 3;
+
+}
+.onCopy {
+    grid-column: 4
+}
+.onShiftUp {
+    grid-column: 5
+}
+.onShiftDown {
+    grid-column: 6
+}
+.onClear{
+    grid-column:7
 }

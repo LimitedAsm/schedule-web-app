@@ -6,12 +6,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5vh;
+    margin-top: 2vh;
     /* flex-direction:row; */
     /* height: 90vh; */
 }
 .main-timetable .timetable {
-    margin: 0 0 4vh 3vw;
+    margin: 2vh 3vw 2vh 3vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,6 +22,7 @@
     min-width: 20vw;
 }
 .main-timetable .timetable__date {
+    margin-right: 1em;
     font-size: 20px;
     font-weight: 600;
     /* padding-left: 40px; */
@@ -37,3 +38,7 @@
     top: 0; */
 }
 
+.main-timetable .main__title{
+    text-align: center;
+    font-size: 20px;
+}

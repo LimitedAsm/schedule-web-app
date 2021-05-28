@@ -1,12 +1,61 @@
 <template>
-  <div class="lesson__info">
-    <div class="main__info">
-      <div class="select__menu">
+  <!-- <div class="lesson__info"> -->
+    
+  <div class="main__info">
+    <p class="lesson__number">{{ lessonNumber }}</p>
+    <div class="select__menu">
+      <div class="subgroup main__group">
+        <input
+          list="subject"
+          placeholder="Предмет"
+          v-model="lesson.subject"
+        />
+        <datalist id="subject" title="Предмет">
+          <option 
+            v-for="subject in $store.getters.getSubjects"
+            :key="subject"
+          >
+            {{ subject }}
+          </option>
+        </datalist>
+        <input
+          list="employee"
+          placeholder="Преподаватель"
+          v-model="lesson.employee"
+        />
+        <datalist id="employee" title="Преподаватель">
+          <option 
+            v-for="employee in $store.getters.getEmployees"
+            :key="employee"
+          >
+            {{ employee }}
+          </option>
+        </datalist>
+        <input 
+          list="room" 
+          placeholder="Кабинет" 
+          v-model="lesson.room"
+        />
+        <datalist id="room" title="Кабинет">
+          <option 
+            v-for="room in $store.getters.getRooms"
+            :key="room"
+          >
+            {{ room }}
+          </option>
+        </datalist>
+        <!-- <input 
+          list="идентификатор5" 
+          placeholder="Заметки" 
+          v-model="lesson.note"
+        /> -->
+      </div>
+      <template v-if='lesson.subgroup'>
         <div class="subgroup main__group">
           <input
             list="subject"
             placeholder="Предмет"
-            v-model="lesson.subject"
+            v-model="lesson.subjectSubgroup"
           />
           <datalist id="subject" title="Предмет">
             <option 
@@ -16,12 +65,13 @@
               {{ subject }}
             </option>
           </datalist>
+
           <input
-            list="employee"
+            list="teacher"
             placeholder="Преподаватель"
-            v-model="lesson.employee"
+            v-model="lesson.employeeSubgroup"
           />
-          <datalist id="employee" title="Преподаватель">
+          <datalist id="teacher" title="Преподаватель">
             <option 
               v-for="employee in $store.getters.getEmployees"
               :key="employee"
@@ -29,10 +79,11 @@
               {{ employee }}
             </option>
           </datalist>
+
           <input 
             list="room" 
             placeholder="Кабинет" 
-            v-model="lesson.room"
+            v-model="lesson.roomSubgroup"
           />
           <datalist id="room" title="Кабинет">
             <option 
@@ -42,119 +93,84 @@
               {{ room }}
             </option>
           </datalist>
-          <!-- <input 
-            list="идентификатор5" 
+          <!-- <input  
             placeholder="Заметки" 
-            v-model="lesson.note"
+            v-model="lesson.noteSubgroup"
           /> -->
         </div>
-        <template v-if='lesson.subgroup'>
-          <div class="subgroup main__group">
-            <input
-              list="subject"
-              placeholder="Предмет"
-              v-model="lesson.subjectSubgroup"
-            />
-            <datalist id="subject" title="Предмет">
-              <option 
-                v-for="subject in $store.getters.getSubjects"
-                :key="subject"
-              >
-                {{ subject }}
-              </option>
-            </datalist>
-
-            <input
-              list="teacher"
-              placeholder="Преподаватель"
-              v-model="lesson.employeeSubgroup"
-            />
-            <datalist id="teacher" title="Преподаватель">
-              <option 
-                v-for="employee in $store.getters.getEmployees"
-                :key="employee"
-              >
-                {{ employee }}
-              </option>
-            </datalist>
-
-            <input 
-              list="room" 
-              placeholder="Кабинет" 
-              v-model="lesson.roomSubgroup"
-            />
-            <datalist id="room" title="Кабинет">
-              <option 
-                v-for="room in $store.getters.getRooms"
-                :key="room"
-              >
-                {{ room }}
-              </option>
-            </datalist>
-            <!-- <input  
-              placeholder="Заметки" 
-              v-model="lesson.noteSubgroup"
-            /> -->
-          </div>
-        </template>
-      </div>    
+      </template>
+    </div> 
+  </div>   
       
-      <div class="option">
-        <button 
-          class="option__btn"
-          v-on:click="handleSubgroupButton"
-        >
-          <input
-          v-bind:id="group + lessonNumber"
-          type="checkbox"
-          v-model="lesson.subgroup"
-          >
-          По подгруппам
-        </button>
-        <!-- <label 
-          v-bind:for="group + lessonNumber"
-        ></label> -->
+  <!-- <button 
+    class="option__btn"
+    v-on:click="handleSubgroupButton"
+  > -->
 
-        <button 
-          type="button" 
-          class="option__btn del"
-          v-on:click="handleInsertLesson"
-        >
-        вставка
-        </button>
-      
-        <button 
-          type="button" 
-          class="option__btn del"
-          v-on:click="handleCopyLesson" 
-        > 
-        копия
-        </button> 
-      
-        <button 
-          type="button" 
-          class="option__btn del addDown"
-          v-on:click="shiftLessonUp"
-        >Сдвиг вверх
-        </button>
-      
-        <button
-          type="button"
-          class="option__btn"
-          v-on:click="shiftLessonDown"
-        >Сдвиг вниз
-        </button>
 
-        <button 
-          type="button" 
-          class="option__btn"
-          v-on:click="handleCleaningLesson"  
-        >Очистка
-        </button>
-      </div>
-    </div>
+    <!-- <input
+    class="checkbox"
+      v-bind:id="group + lessonNumber"
+      type="checkbox"
+      v-model="lesson.subgroup"
+    > -->
 
-</div>
+  <!-- </button> -->
+
+  <!-- <label 
+    v-bind:for="group + lessonNumber"
+  ></label> -->
+
+  <input type="checkbox" class="checkbox"  v-bind:id="group + ' ' + lessonNumber" v-model="lesson.subgroup"/>
+  <label  v-bind:for="group + ' ' + lessonNumber"></label>
+
+<!-- <label class="checkbox">
+	<input type="checkbox" />
+	<div class="checkbox__text"></div>
+</label> -->
+
+<!-- v-bind:id="group + lessonNumber" -->
+
+
+  <button 
+    type="button" 
+    class="option__btn del"
+    v-on:click="handleInsertLesson"
+  >
+  <img src="../assets/paste.svg">
+  </button>
+
+  <button 
+    type="button" 
+    class="option__btn del"
+    v-on:click="handleCopyLesson" 
+  > 
+  <img src="../assets/copy.svg">
+  </button> 
+
+  <button 
+    type="button" 
+    class="option__btn del addDown"
+    v-on:click="shiftLessonUp"
+  >
+  <img src="../assets/arrow-up.svg">
+  </button>
+
+  <button
+    type="button"
+    class="option__btn"
+    v-on:click="shiftLessonDown"
+  >
+  <img src="../assets/arrow-down.svg">
+  </button>
+
+  <button 
+    type="button" 
+    class="option__btn"
+    v-on:click="handleCleaningLesson"  
+  >
+  <img src="../assets/delete.svg">
+  </button>
 </template>
 
 <script>
@@ -269,5 +285,5 @@ export default {
 </script>
 
 <style>
-
+@import '../assets/Lesson.module.css';
 </style>

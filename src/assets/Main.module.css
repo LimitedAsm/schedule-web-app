@@ -4,17 +4,29 @@ body {
     min-height: 100vh;
     font-family: "Open Sans";
     margin: 0;
-    padding: 20px 50px;
+    padding: 20px 3vw;
     box-sizing: border-box;
     color: #363636;
 }
 
+.btn{
+    border-radius: 4px;
+    border: 1px solid #4fc1e9;
+    padding: 8px 14px;
+    color: #4fc1e9;
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+} 
 p {
     margin: 0;
 }
 
 .main {
-    margin-top: 60px;
+    margin-top: 10vh;
 }
 
 input {
@@ -46,92 +58,10 @@ button{
     overflow: hidden;
 }
 
-/* .main__inner {
-    margin-top: 40px;
-} */
-
-
-
-.option__btn{
-    border: 1px solid gray;
-    border-radius: 8%;
-}
-
-.lesson {
-    display: flex;
-    align-items: flex-end;
-    margin-top: 5px;
-}
-
-.lesson__number{
-    color: #707070;
-    font-size: 20px;
-    font-weight: 300;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    margin-bottom: auto;
-    margin-top: auto;
-    border-radius: 50%;
-}
-
 
 .filter-option pull-left{
     width: 20%;
 }
-
-.option{
-    float: right;
-    display: flex;
-    flex-direction: row;
-    vertical-align: 100%;
-    max-height: 100%;
-    margin-bottom: 5px;
-}
-
-.option__btn{
-    vertical-align: top;
-    padding: 1px;
-    float: right;
-    display: flex;
-    margin-left: 10px;
-    margin-bottom: auto;
-    margin-top: auto;
-}
-
-.select__menu{
-    display: flex;
-    flex-direction: column;
-    vertical-align: top;
-}
-
-.select__menu *{
-    margin-left: 3px;
-}
-
-.select__menu .cabinet button{
-    width: 100px;
-}
-
-.select__menu .cabinet{
-    width: 100px;
-}
-
-.select__menu .subgroup{
-
-    margin-bottom: 5px;
-}
-
-.subgroup{
-    display: flex;
-    flex-direction: row;
-}
-
-.subgroup *{
-    margin-right: 3px;
-}
-
 .main__info{
     display: flex;
     flex-direction: row;

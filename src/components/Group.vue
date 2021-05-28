@@ -1,32 +1,35 @@
 <template>
-  <div class="group">
-    <p class="group__name">{{ group }}</p>
-    <div 
-      class="lesson" 
-      v-for="lesson in lessons"
-      :key="lesson"
-    >
-      <p class="lesson__number">{{ lesson  }} </p>
-      <Lesson 
-        :lessonNumber="lesson"
-        :group="group"
-        @shiftLessonUp="shiftLessonUp"
-        @shiftLessonDown="shiftLessonDown"
-        @cleaningLesson="cleaningLesson"
-      ></Lesson>
+  <div class="group">    
+    <div class="grid__lesson">
+      <p class="group__name">{{ group }}</p>
+      <GroupHeader ></GroupHeader>
+      <template 
+        v-for="lesson in lessons"
+        :key="lesson"
+      >
+        <Lesson 
+          :lessonNumber="lesson"
+          :group="group"
+          @shiftLessonUp="shiftLessonUp"
+          @shiftLessonDown="shiftLessonDown"
+          @cleaningLesson="cleaningLesson"
+        ></Lesson>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-import Lesson from './Lesson';
+import Lesson from "./Lesson";
+import GroupHeader from "./GroupHeader"
 export default {
   name: "Group",
   props: [
-    'group'
+    "group"
   ],
   components: {
-    Lesson
+    Lesson,
+    GroupHeader,
   },
   data() {
     return {

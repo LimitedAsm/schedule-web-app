@@ -11,6 +11,10 @@
     transition: all 0.3s;
     text-decoration: none;
 }
+.header__item.header__btn {
+    margin-right: 1vw;
+    margin-left: 1vw;
+}
 
 .header__btn.danger {
     border: 1px solid #ed5565;
@@ -33,6 +37,7 @@
     height: 10vh;
     background-color: #fff;
     position: fixed;
+    z-index: 999999;
 }
 
 .header {
@@ -51,9 +56,9 @@
     align-items: center;
 }
 
-.header__item {
+/* .header__item {
     margin-right: 50px;
-}
+} */
 
 .header__api {
     position: relative;
@@ -86,9 +91,9 @@
 }
 
 .header__user {
-    padding-left: 35px;
+    padding-left: 3vw;
     position: relative;
-    margin-right: 40px;
+    margin-right: 1vw;
 }
 
 .header__user:before {
@@ -104,4 +109,5 @@
 .header__data {
     font-size: 20px;
     font-weight: 600;
+    padding-left: 7vw;
 }

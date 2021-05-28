@@ -3,6 +3,8 @@
     <div class="authenticationLable">Авторизация</div>
     <input v-model="user.username" placeholder="Логин" type="text" />
     <input v-model="user.password" placeholder="Пароль" type="password" />
+    <!-- <button class="header__btn" v-on:click="handleAuthorization">Войти</button> -->
+    
     <button class="authenticationButton" v-on:click="handleAuthorization">Войти</button>
     <div class="errorMessage">{{$store.getters.getErrorMessage}}</div>
   </div>
