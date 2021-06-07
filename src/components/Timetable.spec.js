@@ -1,21 +1,10 @@
 import { mount } from "@vue/test-utils"
+import testStore from "../store/testStore.js"
 import Timetable from "./Timetable.vue"
-import { createStore } from 'vuex'
-
-const store = createStore({
-  getters: {
-    getUsername(){
-      return "test username"
-    },
-    getPlates(){
-      return ["1","2","3"]
-    }
-  }
-})
 
 const wrapper =  mount(Timetable,{
   global: {
-    plugins: [store]
+    plugins: [testStore]
   }
 })
 

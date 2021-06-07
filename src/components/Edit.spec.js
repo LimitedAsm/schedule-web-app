@@ -1,48 +1,10 @@
 import { mount } from "@vue/test-utils"
-import { createStore } from 'vuex'
+import testStore from "../store/testStore.js"
 import Edit from './Edit.vue'
-
-const store = createStore({
-  getters:{
-    getGroups: () => {
-      return ["1", "2", "3"]
-    },
-    getAlarms: () => {
-      return ["1", "2", "3"]
-    },
-    getSchedule: () => {
-      return "noSchedule"
-    },
-    getSubjects(){
-      return ["1", "2", "3"]
-    },
-    getEmployees(){
-      return ["1", "2", "3"]
-    }, 
-    getRooms(){
-      return ["1", "2", "3"]
-    },
-    getGroupRefKey: () => () =>{
-      return ["1", "2", "3"]
-    },
-    getRoomRefKey: () => () =>{
-      return ["1", "2", "3"]
-    },
-    getSubjectRefKey: () => () =>{
-      return ["1", "2", "3"]
-    },
-    getEmployeeRefKey: () => () =>{
-      return ["1", "2", "3"]
-    },
-    getUsername: () => {
-      return ""
-    },
-  }
-})
 
 const wrapper = mount(Edit, {
   global: {
-    plugins: [store]
+    plugins: [testStore]
   }
 })
 

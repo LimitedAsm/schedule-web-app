@@ -1,31 +1,10 @@
 import { mount } from "@vue/test-utils"
-import { createStore } from 'vuex'
+import testStore from "../store/testStore.js"
 import Group from './Group.vue'
-
-const store = createStore({
-  getters:{
-    getGroups: () => {
-      return ["1", "2", "3"]
-    },
-    getSchedule: () => {
-      return "noSchedule"
-    },
-    getSubjects(){
-      return ["1", "2", "3"]
-    },
-    getEmployees(){
-      return ["1", "2", "3"]
-    }, 
-    getRooms(){
-      return ["1", "2", "3"]
-    },
-  }
-})
 
 const wrapper = mount(Group, {
   global: {
-    plugins: [store],
-
+    plugins: [testStore],
     provide: {
       getChildrenFunction() {
         (getFunc, setFunc) =>{
@@ -33,8 +12,7 @@ const wrapper = mount(Group, {
         } 
       }
     }
-  },
-  
+  }
 })
 
 test('Render lessons', () => {

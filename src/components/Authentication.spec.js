@@ -1,36 +1,10 @@
 import { mount } from "@vue/test-utils"
-import { createStore } from 'vuex'
+import testStore from "../store/testStore.js"
 import Authentication from './Authentication.vue'
-
-const store = createStore({
-  actions:{
-    fetchLogin(context, user){
-      context.commit('updateErrorMessage', user.username)
-    },
-    fetchAllEditInformation(context){
-      return context 
-    }
-  },
-  mutations:{
-    updateErrorMessage(state, errorMessage){
-      state.errorMessage = errorMessage
-    }
-  },
-  state() {
-    return {
-      errorMessage: "test"
-    }
-  },
-  getters:{
-    getErrorMessage: state => {
-      return state.errorMessage
-    }
-  }
-})
 
 const wrapper = mount(Authentication, {
   global: {
-    plugins: [store]
+    plugins: [testStore]
   }
 })
 
