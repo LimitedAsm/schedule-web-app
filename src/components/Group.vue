@@ -5,7 +5,7 @@
       <GroupHeader ></GroupHeader>
       <template 
         v-for="lesson in lessons"
-        :key="lesson"
+        :key="lesson"        
       >
         <Lesson 
           :lessonNumber="lesson"

@@ -28,7 +28,7 @@
     /* padding-left: 40px; */
     /* position: relative; */
 }
-.main-timetable .timetable__date:before {
+/* .main-timetable .timetable__date:before { */
     /* content: url(calendar.svg); */
     /* background-image: url(calendar.svg); */
     /* width: 27px;
@@ -36,7 +36,7 @@
     /* position: absolute; */
     /* left: 0;
     top: 0; */
-}
+/* } */
 
 .main-timetable .main__title{
     text-align: center;

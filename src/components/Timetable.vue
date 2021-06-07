@@ -2,28 +2,40 @@
 <Header
  :typeHeader="'timetable'"
 ></Header>
-<!-- <TimetableHeader></TimetableHeader> -->
 <div class="main main-timetable">
-    <p class="main__title">Список администрируемых расписаний</p>
-    <div class="main__inner">
-        <div 
-            class="timetable" 
-            v-for="date in this.getDates"
-            :key="date"
-        >
-            <!-- <img src="../assets/calendar.svg"> -->
-            <p class="timetable__date">{{ date }}</p>
-            <button    
-                class="header__btn"
-                v-on:click="editSheduleOnDate(date)"
-            >Редактировать</button>
-        </div>
-    </div>
+  <div class="select__block">
+    <p class="select__text">Площадка: </p>
+    <select class="select">
+      <option
+        data-test="plates"
+        v-for="plate in this.plates"
+        :key="plate"
+      >{{plate}}</option>
+    </select>
+  </div>
+  <p class="main__title">Список администрируемых расписаний</p>
+  <div class="main__inner">
+      <div 
+          class="timetable" 
+          v-for="date in this.getDates"
+          :key="date"
+      >
+          <p 
+            class="timetable__date"
+            data-test="timetable"
+          >{{ date }}</p>
+          <button    
+              class="header__btn"
+              v-on:click="editSheduleOnDate(date)"
+          >Редактировать</button>
+      </div>
+  </div>
 </div>
 
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Header from './Header.vue';
 export default {
   name: "Timetable",
@@ -66,9 +78,13 @@ export default {
         }
       }
       return dates;
+    },
+    plates(){
+      return this.getPlates()
     }
   },
   methods:{
+    ...mapGetters(["getPlates"]),
     editSheduleOnDate(date){
       this.$emit('editSheduleOnDate', date);
     },
@@ -79,6 +95,9 @@ export default {
       date: ""
     }
   },
+  // created(){
+  //   this.fetchAllEditInformation()
+  // }
 }
 </script>
 

@@ -5,30 +5,46 @@
     @backToTimetable="backToTimetable"
   >
   </Header>
-  <template v-if="$store.state.loading != 0">
+  
+  <div class="select__edit__block">
+    <p class="select__text">Расписание звонков: </p>
+    <select class="select__edit">
+      <option 
+        v-for="alarm in this.alarms"
+        :key="alarm"
+        data-test="alarm"
+      >{{alarm}}</option>
+    </select>  
+  </div>
+  <!-- <template v-if="$store.state.loading != 0">
     загрузка{{$store.state.loading}}
-  </template>
-  <div v-else class="groups">
+  </template> -->
+  <!-- <div v-else class="groups"> -->
+
+  <div class="groups" >
     <template
-      v-for="group in $store.getters.getGroups"
+      v-for="group in this.groups"
       :key="group"
+      
     >
       <Group
-      :group="group"
+        data-test="group"
+        :group="group"
       ></Group>
     </template>
   </div>
 </template>
 
 <script>
+import swal from 'sweetalert';
 import Group from './Group';
-import {mapActions, mapGetters} from 'vuex';
+import {mapGetters} from 'vuex';
 import Header from './Header.vue';
 export default {
   name: "Edit",
   components: {
     Group,
-    Header
+    Header,
   },
   props: [
     "editDate",
@@ -42,12 +58,20 @@ export default {
       date: this.editDate,
     }
   },
+  computed: {
+    alarms(){
+      return this.getAlarms()
+    },
+    groups(){
+      return this.getGroups()
+    }
+  },
   methods: {
-    ...mapActions(["fetchAllEditInformation"]),
-    ...mapGetters(["getGroupRefKey", "getRoomRefKey", "getSubjectRefKey", "getEmployeeRefKey", "getHost", "getToken"]),
+    ...mapGetters(["getVersion","getGroupRefKey", "getRoomRefKey", "getSubjectRefKey",
+     "getEmployeeRefKey", "getHost", "getToken", "getAlarms", "getGroups"]),
     async saveSchedule(){
       let date = new Date(this.date)
-      let schedule  = [];
+      let schedule = [];
       const scheduleDate = date.toISOString().slice(0, -5)
       // console.log(scheduleDate)
       let informaion = {}
@@ -118,19 +142,32 @@ export default {
           "schedule": schedule
         }
       });
-      // console.log(informaion);
+      console.log(informaion);
       await fetch(
-        this.getHost() + 'schedule/create',
+        this.getHost() + this.getVersion() + '/schedule/create',
         {
           method: 'POST',
           headers: {
-              "Authorization": "Token " + this.getToken(),
-              "Content-Type": "application/json"
+            "Authorization": "Token " + this.getToken(),
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(informaion)
         }
       )
-      this.backToTimetable();
+      .then(
+        response => {
+          if(response == "blabla"){
+            swal("Расписание успешно сохранено")
+          }
+          else{
+            swal("Ошибка сохранения расписания")
+          }          
+        },
+        reject => {
+            console.log('Error: ', reject)
+            swal("Сервер недоступен обратитесь к системному администратору")
+        })
+      // this.backToTimetable();
     },
     backToTimetable(){
       this.childrenFunction = [];
@@ -146,9 +183,6 @@ export default {
       dates: "",
       getChildrenFunction: this.getChildrenFunction
     }
-  },
-  async created() {
-    this.fetchAllEditInformation();
   },
 }
 </script>

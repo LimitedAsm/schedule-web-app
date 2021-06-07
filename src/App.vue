@@ -1,5 +1,4 @@
 <template>
-
   <Overview v-if="this.activePage == 'Overview'"></Overview>
 
   <Authentication
@@ -15,6 +14,9 @@
     
     @backToTimetable="backToTimetable"
   ></Edit>
+  <p class="serverVersion">server: {{ $store.getters.getServerVersion }}</p>
+  <!-- <p class="version">clien: v{{ require('../package.json').version }}</p> -->
+  <p class="version">clien: {{ version }}</p>
 </template>
 
 <script>
@@ -33,38 +35,38 @@
     },
     data() {
       return {
-        // activePage: "Timetable",
         activePage: "Timetable",
+        // activePage: "Overview",
         editDate: "",
-        // schedule: "" 
+        version: ""
       }
     },
     methods: {
-      ...mapActions(["newEdit", "fetchSchedule"]),
-      // ...mapGetters(["getHost", "getToken"]),
+
+      ...mapActions(["newEdit", "fetchSchedule", "fetchServerVersion"]),
       editSheduleOnDate(date){
-
-
-        this.fetchSchedule(date)
-        
-        
+        this.fetchSchedule(date)        
         this.editDate = date;
         this.activePage = "Edit";
       },
       backToTimetable(){
         this.activePage = "Timetable";
         this.editDate = "";
-        // this.schedule = "";
         this.newEdit();
       }
     },
-
     provide() {
       return {
         editDate: this.editDate,
-        schedule: this.schedule
+        // schedule: this.schedule
       }
     },
+    async created(){
+      this.fetchServerVersion()
+      const res = await fetch("https://api.github.com/repos/LimitedAsm/schedule-web-app/commits/main")
+      let version = await res.json()
+      this.version = version.sha.slice(0,6)
+    }
   }
 </script>
 

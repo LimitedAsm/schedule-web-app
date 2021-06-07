@@ -13,19 +13,21 @@
             v-on:click="backToTimetable"
           >Назад</button>
           <button 
+            data-test="saveButton"
             class="header__btn header__item"
             v-on:click="saveSchedule"
           >Сохранить</button>
         </template>
       </div>
       <template v-if="this.typeHeader == 'edit'">
-        <p class="header__data">{{this.date}}</p>
+        <p class="header__data" data-test="editDate">{{this.date}}</p>
       </template>
-      <template v-if="this.typeHeader == 'timetable'">
-        <p class="header__data">{{ this.dateFirst }} - {{ this.dateLast }}</p>
+      <template v-else-if="this.typeHeader == 'timetable'">
+        <p class="header__data" data-test="timetableDate">{{ this.dateFirst }} - {{ this.dateLast }}</p>
       </template>
       <div class="header__right">
-        <p class="header__user">{{ $store.state.username }}</p>
+        <button class="header__btn header__item" v-on:click="hendlerSynchronization" >Синхронизация</button>
+        <p class="header__user">{{ username }}</p>
         <button 
           class="header__btn danger"
           v-on:click="handleLogOut"
@@ -36,7 +38,8 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import swal from 'sweetalert';
+import {mapActions, mapGetters} from 'vuex';
 export default {
   name: "Header",
   emits: [
@@ -56,10 +59,14 @@ export default {
     },
     dateLast() {
         return this.dates[this.dates.length - 1]
+    },
+    username(){
+      return this.getUsername()
     }
   },
   methods: {
-    ...mapActions(["logOut"]),
+    ...mapActions(["logOut", "fetchAllEditInformation"]),
+    ...mapGetters(["getHost", "getVersion", "getToken", "getUsername"]),
     handleLogOut(){
       this.backToTimetable()
       this.logOut()
@@ -68,7 +75,28 @@ export default {
       this.$emit("saveSchedule")
     },
     backToTimetable(){
-      this.$emit("backToTimetable")
+      this.$emit("backToTimetable");
+    },
+
+    async hendlerSynchronization(){
+      await fetch(this.getHost() + this.getVersion() + '/sync-with-1c',                    
+        {
+          headers: {
+            "Authorization": "Token " + this.getToken()
+          }
+        })
+      .then(
+        async response => {
+          const responseJSON = await response.json();
+          if(responseJSON.data.hasDataChanged == true){
+            this.fetchAllEditInformation()
+          }
+        },
+        reject => {
+          swal("Сервер недоступен обратитесь к системному администратору");
+          console.log('Error: ', reject)
+        }
+      );
     }
   },
 }

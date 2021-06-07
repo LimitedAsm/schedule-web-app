@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="lesson__info"> -->
     
-  <div class="main__info">
+  <div class="main__info" data-test="lesson">
     <p class="lesson__number">{{ lessonNumber }}</p>
     <div class="select__menu">
       <div class="subgroup main__group">
@@ -12,7 +12,7 @@
         />
         <datalist id="subject" title="Предмет">
           <option 
-            v-for="subject in $store.getters.getSubjects"
+            v-for="subject in this.subjects"
             :key="subject"
           >
             {{ subject }}
@@ -25,7 +25,7 @@
         />
         <datalist id="employee" title="Преподаватель">
           <option 
-            v-for="employee in $store.getters.getEmployees"
+            v-for="employee in this.employees"
             :key="employee"
           >
             {{ employee }}
@@ -33,12 +33,12 @@
         </datalist>
         <input 
           list="room" 
-          placeholder="Кабинет" 
+          placeholder="Аудитория" 
           v-model="lesson.room"
         />
-        <datalist id="room" title="Кабинет">
+        <datalist id="room" title="Аудитория">
           <option 
-            v-for="room in $store.getters.getRooms"
+            v-for="room in this.rooms"
             :key="room"
           >
             {{ room }}
@@ -59,7 +59,7 @@
           />
           <datalist id="subject" title="Предмет">
             <option 
-              v-for="subject in $store.getters.getSubjects"
+              v-for="subject in this.subjects"
               :key="subject"
             >
               {{ subject }}
@@ -73,7 +73,7 @@
           />
           <datalist id="teacher" title="Преподаватель">
             <option 
-              v-for="employee in $store.getters.getEmployees"
+              v-for="employee in this.employees"
               :key="employee"
             >
               {{ employee }}
@@ -82,12 +82,12 @@
 
           <input 
             list="room" 
-            placeholder="Кабинет" 
+            placeholder="Аудитория" 
             v-model="lesson.roomSubgroup"
           />
-          <datalist id="room" title="Кабинет">
+          <datalist id="room" title="Аудитория">
             <option 
-              v-for="room in $store.getters.getRooms"
+              v-for="room in this.rooms"
               :key="room"
             >
               {{ room }}
@@ -137,7 +137,7 @@
     class="option__btn del"
     v-on:click="handleInsertLesson"
   >
-  <img src="../assets/paste.svg">
+    <img src="../assets/paste.svg">
   </button>
 
   <button 
@@ -145,7 +145,7 @@
     class="option__btn del"
     v-on:click="handleCopyLesson" 
   > 
-  <img src="../assets/copy.svg">
+    <img src="../assets/copy.svg">
   </button> 
 
   <button 
@@ -153,7 +153,7 @@
     class="option__btn del addDown"
     v-on:click="shiftLessonUp"
   >
-  <img src="../assets/arrow-up.svg">
+    <img src="../assets/arrow-up.svg">
   </button>
 
   <button
@@ -161,7 +161,7 @@
     class="option__btn"
     v-on:click="shiftLessonDown"
   >
-  <img src="../assets/arrow-down.svg">
+    <img src="../assets/arrow-down.svg">
   </button>
 
   <button 
@@ -169,7 +169,7 @@
     class="option__btn"
     v-on:click="handleCleaningLesson"  
   >
-  <img src="../assets/delete.svg">
+    <img src="../assets/delete.svg">
   </button>
 </template>
 
@@ -190,7 +190,6 @@ export default {
   inject: [
     "getLessonFunction",
     "getChildrenFunction",
-    "schedule"
   ],
   data() {
     return {
@@ -205,16 +204,27 @@ export default {
       },
     }
   },
-
+  computed: {
+    subjects(){
+      return this.getSubjects()
+    },
+    employees(){
+      return this.getEmployees()
+    }, 
+    rooms(){
+      return this.getRooms()
+    }
+  },
   methods: {
     ...mapActions(["copyLesson"]),
-    ...mapGetters(["getSchedule", "getSubjectByRefKey", "getGroupRefKey", "getEmployeeByRefKey", "getRoomByRefKey"]),
+    ...mapGetters(["getSchedule", "getSubjectByRefKey", "getGroupRefKey",
+     "getEmployeeByRefKey", "getRoomByRefKey", "getSubjects", "getEmployees", "getRooms", "getCopiedLesson"]),
     handleSubgroupButton(){
       this.lesson.subgroup = !this.lesson.subgroup 
     },
     handleInsertLesson(){
-      if(this.$store.getters.getCopiedLesson != "notOneCopy"){
-        this.lesson = this.$store.getters.getCopiedLesson;
+      if(this.getCopiedLesson() != "notOneCopy"){
+        this.lesson = this.getCopiedLesson();
       }
     },
     handleCopyLesson(){

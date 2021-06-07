@@ -96,9 +96,9 @@
 .subgroup *{
     margin-right: 3px;
 }
-.main__info{
+/* .main__info{ */
     /* margin-right: auto; */
-}
+/* } */
 
 .main__info input{
     width: min(180px, 15vw);
@@ -108,11 +108,11 @@
 input[type=checkbox]:focus{
     border: none;
 }
-input[type=checkbox]{
+/* input[type=checkbox]{ */
     /* width: 30px;
     height: 30px; */
 
-}
+/* } */
 
 /* check box */
 input[type=checkbox] {
