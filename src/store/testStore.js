@@ -29,16 +29,16 @@ export default createStore({
     getErrorMessage: state => {
       return state.errorMessage
     },
-    getGroups: () => {
+    getGroups(){
       return ["1", "2", "3"]
     },
-    getAlarms: () => {
+    getAlarms(){
       return ["1", "2", "3"]
     },
     getPlates(){
       return ["1","2","3"]
     },
-    getSchedule: () => {
+    getSchedule(){
       return "noSchedule"
     },
     getSubjects(){
@@ -50,25 +50,25 @@ export default createStore({
     getRooms(){
       return ["1", "2", "3"]
     },
-    getGroupRefKey: () => () =>{
+    getGroupRefKey(){
       return ["1", "2", "3"]
     },
-    getRoomRefKey: () => () =>{
+    getRoomRefKey(){
       return ["1", "2", "3"]
     },
-    getSubjectRefKey: () => () =>{
+    getSubjectRefKey(){
       return ["1", "2", "3"]
     },
-    getEmployeeRefKey: () => () =>{
+    getEmployeeRefKey(){
       return ["1", "2", "3"]
     },
-    getUsername: () => {
+    getUsername(){
       return "test username"
     },
-    getHost: () => {
+    getHost(){
       return "1"
     },
-    getVersion: () => {
+    getVersion(){
       return "1"
     },
     getToken(){

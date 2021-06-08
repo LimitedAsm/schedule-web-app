@@ -1,5 +1,7 @@
 // import post from './modules/post'
 import { createStore} from "vuex";
+const config = require('./../../config.js').data;
+ 
 
 export default createStore({
     actions: {
@@ -190,8 +192,9 @@ export default createStore({
     },
     state() {
         return {
-            host: "http://95.79.50.190:8000/api/",
-            version : "v1",
+            
+            host: `${config.PROTOCOL}://${config.HOST}:${config.PORT}/api/`,
+            version : config.VERSION,
             token: "",
             username: "",
             groups: [],
