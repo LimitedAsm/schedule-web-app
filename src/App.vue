@@ -43,22 +43,20 @@
     },
     methods: {
 
-      ...mapActions(["newEdit", "fetchSchedule", "fetchServerVersion"]),
-      editSheduleOnDate(date){
-        this.fetchSchedule(date)        
+      ...mapActions(["fetchSchedule", "fetchServerVersion"]),
+      async editSheduleOnDate(date){
+        await this.fetchSchedule(date)        
         this.editDate = date;
         this.activePage = "Edit";
       },
       backToTimetable(){
         this.activePage = "Timetable";
         this.editDate = "";
-        this.newEdit();
       }
     },
     provide() {
       return {
         editDate: this.editDate,
-        // schedule: this.schedule
       }
     },
     async created(){

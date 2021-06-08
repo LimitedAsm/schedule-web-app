@@ -75,9 +75,30 @@ export default createStore({
                 }
             );
         },   
-        newEdit(context){  
-            context.commit('updateEdit');
+        async synchronization1CServer(context){
+            await fetch(
+                this.getters.getHost + this.getters.getVersion + '/sync-with-1c',                    
+                {
+                    headers: {
+                        "Authorization": "Token " + this.getters.getToken
+                    }
+                }
+            )
+            .then(
+            async response => {
+                const responseJSON = await response.json();
+                if(responseJSON.data.hasDataChanged == true){
+                    console.log(context)
+                    context.dispatch('fetchAllEditInformation')
+                }
+            },
+            reject => {
+                console.log('Error: ', reject)
+                context.commit('updateErrorMessage', "Сервер недоступен обратитесь к системному администратору");
+            }
+            );
         },
+            
         logOut(context){
             context.commit('updateToken', ['', ''])
         },
@@ -104,12 +125,17 @@ export default createStore({
                     }
                 }
             )
+            
+            console.log(res)
+            
             const scheduleJSON = await res.json();
+            console.log(scheduleJSON)
             if(scheduleJSON.message == "not_found"){
                 context.commit('updateSchedule', "noSchedule")
             }
             else{
                 const schedule = scheduleJSON.data.schedule
+                console.log(schedule)
                 context.commit('updateSchedule', schedule)
             }
         },
@@ -123,36 +149,24 @@ export default createStore({
             );
         },
         updateSubjects(state, subjects){
-            subjects.forEach((element) => {  
-                state.subjects.push(element)
-            },
+            state.subjects = subjects
             state.loading++
-            );
         },
         updatePractices(state, practices){
-            practices.forEach((element) => {  
-                state.subjects.push(element)
-            },
+            state.subjects = practices
             state.loading++
-            );
         },
         updateRooms(state, rooms){
             state.rooms = rooms
             state.loading++  
         },
         updateGroups(state, groups){
-            groups.forEach((element) => {
-                state.groups.push(element)
-            },
+            state.groups = groups
             state.loading++
-            );
         },
         updateAlarms(state, alarms){
-            alarms.forEach((element) => {
-                state.alarms.push(element)
-            },
+            state.alarms = alarms
             state.loading++
-            );
         },
 
         updatePlates(state, plates){

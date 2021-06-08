@@ -264,6 +264,7 @@ export default {
     this.getLessonFunction(this.returnLessonFunctionGet, this.returnLessonFunctionSet, this.lessonNumber)
   }, 
   mounted(){
+    console.log(this.getSchedule())
     if(this.getSchedule() != "noSchedule"){
       this.getSchedule().forEach(schedule => {
         let lesson = this.lesson

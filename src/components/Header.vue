@@ -65,7 +65,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["logOut", "fetchAllEditInformation"]),
+    ...mapActions(["logOut", "synchronization1CServer"]),
     ...mapGetters(["getHost", "getVersion", "getToken", "getUsername"]),
     handleLogOut(){
       this.backToTimetable()
@@ -79,24 +79,8 @@ export default {
     },
 
     async hendlerSynchronization(){
-      await fetch(this.getHost() + this.getVersion() + '/sync-with-1c',                    
-        {
-          headers: {
-            "Authorization": "Token " + this.getToken()
-          }
-        })
-      .then(
-        async response => {
-          const responseJSON = await response.json();
-          if(responseJSON.data.hasDataChanged == true){
-            this.fetchAllEditInformation()
-          }
-        },
-        reject => {
-          swal("Сервер недоступен обратитесь к системному администратору");
-          console.log('Error: ', reject)
-        }
-      );
+      swal("Сервер недоступен обратитесь к системному администратору")
+      this.synchronization1CServer()
     }
   },
 }
