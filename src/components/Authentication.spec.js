@@ -8,11 +8,16 @@ const wrapper = mount(Authentication, {
   }
 })
 
-test('Render error message ', () => {
-  expect(wrapper.html()).toContain('<div class="errorMessage">test</div>')
+test('Render error message', async () => {
+  await wrapper.find(".login").setValue("wrong username")
+  await wrapper.find(".password").setValue("wrong possword")
+  await wrapper.find('button').trigger('click')
+  expect(wrapper.html()).toContain('<div class="message">Неверный логин или пароль</div>')
 })
 
-test('Button click', async () => {
+test('Login function', async () => {
+  await wrapper.find(".login").setValue("correct username")
+  await wrapper.find(".password").setValue("correct possword")
   await wrapper.find('button').trigger('click')
-  expect(wrapper.html()).toContain('<div class="errorMessage">administrator</div>')
+  expect(wrapper.html()).toContain('you new token')
 })

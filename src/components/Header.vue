@@ -20,13 +20,15 @@
         </template>
       </div>
       <template v-if="this.typeHeader == 'edit'">
-        <p class="header__data" data-test="editDate">{{this.date}}</p>
+        <p class="header__data" data-test="editDate">{{this.propDate}}</p>
       </template>
-      <template v-else-if="this.typeHeader == 'timetable'">
+      <div class="dateDiv" v-else-if="this.typeHeader == 'timetable'">
+        <button v-on:click="hendlerShiftDatePast" class="buttonLeft"><img src="../assets/arrow_back.svg"></button>
         <p class="header__data" data-test="timetableDate">{{ this.dateFirst }} - {{ this.dateLast }}</p>
-      </template>
+        <button  v-on:click="hendlerShiftDateFuter" class="buttonRight"><img src="../assets/arrow_forward.svg"></button>
+      </div>
       <div class="header__right">
-        <button class="header__btn header__item" v-on:click="hendlerSynchronization" >Синхронизация</button>
+        <button class="header__btn header__item" v-on:click="hendlerSynchronization" >Обновление данных 1С</button>
         <p class="header__user">{{ username }}</p>
         <button 
           class="header__btn danger"
@@ -44,21 +46,20 @@ export default {
   name: "Header",
   emits: [
     "saveSchedule",
-    "backToTimetable"
+    "backToTimetable",
+    "getDates"
   ],
   props: [
-    "typeHeader"
-  ],
-  inject: [
-    "date",
-    "dates"
+    "typeHeader",
+    "propDates",
+    "propDate"
   ],
   computed: {
     dateFirst() {
-        return this.dates[0]
+        return this.propDates[0]
     },
     dateLast() {
-        return this.dates[this.dates.length - 1]
+        return this.propDates[this.propDates.length - 1]
     },
     username(){
       return this.getUsername()
@@ -66,7 +67,7 @@ export default {
   },
   methods: {
     ...mapActions(["logOut", "synchronization1CServer"]),
-    ...mapGetters(["getHost", "getVersion", "getToken", "getUsername"]),
+    ...mapGetters(["getHost", "getVersion", "getToken", "getUsername","getMessage"]),
     handleLogOut(){
       this.backToTimetable()
       this.logOut()
@@ -79,8 +80,16 @@ export default {
     },
 
     async hendlerSynchronization(){
-      swal("Сервер недоступен обратитесь к системному администратору")
-      this.synchronization1CServer()
+      await this.synchronization1CServer()
+      console.log(this.getMessage())
+      swal(this.getMessage())
+      console.log(this.getMessage())
+    },
+    hendlerShiftDatePast(){
+      this.$emit("getDates", -7)
+    },
+    hendlerShiftDateFuter(){
+      this.$emit("getDates", 7)
     }
   },
 }

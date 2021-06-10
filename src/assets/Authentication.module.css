@@ -47,6 +47,6 @@ input[type="password"]{
     font-size: 27px;
     margin-bottom: 10px;
 }
-.errorMessage{
+.message{
     color: red;
 }

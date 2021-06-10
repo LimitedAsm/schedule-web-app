@@ -1,6 +1,8 @@
 <template>
 <Header
  :typeHeader="'timetable'"
+ @getDates="getDates"
+ :propDates="this.dates"
 ></Header>
 <div class="main main-timetable">
   <div class="select__block">
@@ -17,7 +19,7 @@
   <div class="main__inner">
       <div 
           class="timetable" 
-          v-for="date in this.getDates"
+          v-for="date in this.dates"
           :key="date"
       >
           <p 
@@ -42,14 +44,33 @@ export default {
   components: {
     Header
   },
+  data() {
+    return {
+        dates: [],
+        shiftDate: 0
+      }
+  },
   emits: [
     "editSheduleOnDate"
   ],
   computed:{
-    getDates(){
+    plates(){
+      return this.getPlates()
+    }
+  },
+  methods:{
+    ...mapGetters(["getPlates"]),
+    editSheduleOnDate(date){
+      this.$emit('editSheduleOnDate', date);
+    },
+    getDates(shiftDate = 0){
+      let fullShiftDate = shiftDate + this.shiftDate
+      this.shiftDate = this.shiftDate + shiftDate
       let now = new Date();
       const weekDayNow = now.getDay();
       let startDay = new Date();
+      startDay.setDate(now.getDate() + fullShiftDate)
+      now.setDate(now.getDate() + fullShiftDate)
       let dates = [];
       if(weekDayNow > 1){
         startDay.setDate(startDay.getDate() - weekDayNow + 1);
@@ -77,27 +98,19 @@ export default {
           dates.push(date);
         }
       }
-      return dates;
-    },
-    plates(){
-      return this.getPlates()
-    }
-  },
-  methods:{
-    ...mapGetters(["getPlates"]),
-    editSheduleOnDate(date){
-      this.$emit('editSheduleOnDate', date);
+      console.log(this.dates)
+      this.dates = []
+      this.dates.push(...dates)
+      return dates
     },
   },
-  provide() {
-    return {
-      dates: this.getDates,
-      date: ""
-    }
-  },
-  // created(){
-  //   this.fetchAllEditInformation()
-  // }
+  created(){
+    // console.log(this.getDates())
+    console.log(this.dates)
+    this.getDates(0)
+    // console.log(this.getDates())
+    console.log(this.dates)
+  }
 }
 </script>
 

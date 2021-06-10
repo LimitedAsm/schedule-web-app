@@ -1,15 +1,12 @@
-// import post from './modules/post'
 import { createStore} from "vuex";
 const config = require('./../../config.js').data;
  
-
 export default createStore({
     actions: {
         fetchAllEditInformation(context){
             context.commit('updateEdit');
             const fetchNames = ["group", "employee", "subject", "practice", "room", "alarm", "plate","schedule_template"];
             fetchNames.forEach(async element => {
-                // const res = 
                 await fetch(
                     this.getters.getHost + this.getters.getVersion + "/"+   element + "/list",
                     {
@@ -21,27 +18,19 @@ export default createStore({
                 .then(
                     async response => {
                         const JSON = await response.json();
-                        // if(tokenJSON.data == "Auth failed"){
-                        //     context.commit('updateErrorMessage', "Неверный логин или пароль");
-                        // }
-                        // else{
-                            // const JSON = await res.json();
                             const information = JSON.data
                             const update = "update" + element[0].toUpperCase() + element.slice(1) + "s"
                             context.commit(update, information);
-                        // }
                     },
-    
                     reject => {
                         console.log('Error: ', reject)
-                        context.commit('updateErrorMessage', "Сервер недоступен обратитесь к системному администратору");
+                        context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
                     }
                 );
             });
-            
         },
         async fetchLogin(context, user){
-            context.commit('updateErrorMessage', "");
+            context.commit('updateMessage', "");
             await fetch(
                 this.getters.getHost + this.getters.getVersion + '/user/login',
                 {
@@ -59,19 +48,17 @@ export default createStore({
                 async response => {
                     const tokenJSON = await response.json();
                     if(tokenJSON.data == "Auth failed"){
-                        context.commit('updateErrorMessage', "Неверный логин или пароль");
+                        context.commit('updateMessage', "Неверный логин или пароль");
                     }
                     else{
                         const token = tokenJSON.data.token
-                        context.commit('updateToken', [token,user.username]);
-                        
-                        return "success"
+                        context.commit('updateToken', {token: token,username: user.username});
                     }
                 },
 
                 reject => {
                     console.log('Error: ', reject)
-                    context.commit('updateErrorMessage', "Сервер недоступен обратитесь к системному администратору");
+                    context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
                 }
             );
         },   
@@ -88,19 +75,24 @@ export default createStore({
             async response => {
                 const responseJSON = await response.json();
                 if(responseJSON.data.hasDataChanged == true){
-                    console.log(context)
                     context.dispatch('fetchAllEditInformation')
+                    context.commit('updateEdit');
+                    console.log(responseJSON)
+                    context.commit('updateMessage', "Данные успешно обновлены");
+                }
+                else{
+                    context.commit('updateMessage', "Новых данных не обнаруженно");
                 }
             },
             reject => {
                 console.log('Error: ', reject)
-                context.commit('updateErrorMessage', "Сервер недоступен обратитесь к системному администратору");
+                context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
             }
             );
         },
             
         logOut(context){
-            context.commit('updateToken', ['', ''])
+            context.commit('updateToken', {token: '', username: ''})
         },
         copyLesson(context, lesson){
             context.commit('updateCopiedLesson', lesson)
@@ -125,28 +117,24 @@ export default createStore({
                     }
                 }
             )
-            
-            console.log(res)
+            // console.log(res)
             
             const scheduleJSON = await res.json();
-            console.log(scheduleJSON)
+            // console.log(scheduleJSON)
             if(scheduleJSON.message == "not_found"){
                 context.commit('updateSchedule', "noSchedule")
             }
             else{
-                const schedule = scheduleJSON.data.schedule
-                console.log(schedule)
+                const schedule = scheduleJSON.data[0].schedule
+                // console.log(schedule)
                 context.commit('updateSchedule', schedule)
             }
         },
     },
     mutations:{
         updateEmployees(state, employees){
-            employees.forEach((element) => {
-                state.employees.push(element)
-            },
+            state.employees = employees
             state.loading++
-            );
         },
         updateSubjects(state, subjects){
             state.subjects = subjects
@@ -177,11 +165,10 @@ export default createStore({
             state.scheduleTemplate = schedule_templates
         },
 
-
-        updateToken(state, info){
-            state.token = info[0];
-            state.username = info[1];
-            state.errorMessage = "";
+        updateToken(state, {token, username}){
+            state.token = token;
+            state.username = username;
+            state.message = "";
         },
         updateEdit(state){
             state.loading = -6;
@@ -194,8 +181,8 @@ export default createStore({
         updateCopiedLesson(state, copiedLesson){
             state.copiedLesson = {...copiedLesson}
         },
-        updateErrorMessage(state, errorMessage){
-            state.errorMessage = errorMessage
+        updateMessage(state, message){
+            state.message = message
         },
         updateSchedule(state, schedule){
             state.schedule = schedule
@@ -206,7 +193,6 @@ export default createStore({
     },
     state() {
         return {
-            
             host: `${config.PROTOCOL}://${config.HOST}:${config.PORT}/api/`,
             version : config.VERSION,
             token: "",
@@ -216,7 +202,7 @@ export default createStore({
             subjects: [],
             rooms: [],
             alarms: [],
-            errorMessage: "",
+            message: "",
             loading: -6,
             copiedLesson: "notOneCopy",
             schedule: [],
@@ -226,8 +212,8 @@ export default createStore({
     },
     
     getters: {
-        getErrorMessage: state =>{
-            return state.errorMessage;
+        getMessage: state =>{
+            return state.message;
         },
         getToken: state => {
             return state.token;
@@ -383,6 +369,9 @@ export default createStore({
         },
         getUsername: state =>{
             return state.username
+        },
+        getLoading: state => {
+            return state.loading
         }
 
     },

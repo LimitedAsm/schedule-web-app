@@ -3,35 +3,38 @@
     :typeHeader="'edit'"
     @saveSchedule="saveSchedule"
     @backToTimetable="backToTimetable"
+    :propDate="this.date"
   >
   </Header>
-  
-  <div class="select__edit__block">
-    <p class="select__text">Расписание звонков: </p>
-    <select class="select__edit">
-      <option 
-        v-for="alarm in this.alarms"
-        :key="alarm"
-        data-test="alarm"
-      >{{alarm}}</option>
-    </select>  
-  </div>
-  <!-- <template v-if="$store.state.loading != 0">
+  <template v-if="$store.state.loading != 0">
     загрузка{{$store.state.loading}}
-  </template> -->
-  <!-- <div v-else class="groups"> -->
+  </template>
+  <div v-else>
+    <div class="select__edit__block">
+      <p class="select__text">Расписание звонков: </p>
+      <select class="select__edit">
+        <option 
+          v-for="alarm in this.alarms"
+          :key="alarm"
+          data-test="alarm"
+        >{{alarm}}</option>
+      </select>
+    </div>
 
-  <div class="groups" >
-    <template
-      v-for="group in this.groups"
-      :key="group"
-      
-    >
-      <Group
-        data-test="group"
-        :group="group"
-      ></Group>
-    </template>
+    <!-- <div v-else class="groups"> -->
+
+    <div class="groups" >
+      <template
+        v-for="group in this.groups"
+        :key="group"
+        
+      >
+        <Group
+          data-test="group"
+          :group="group"
+        ></Group>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -179,8 +182,6 @@ export default {
   },
   provide() {
     return {
-      date: this.date,
-      dates: "",
       getChildrenFunction: this.getChildrenFunction
     }
   },

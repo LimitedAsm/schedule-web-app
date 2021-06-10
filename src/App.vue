@@ -2,7 +2,8 @@
   <Overview v-if="this.activePage == 'Overview'"></Overview>
 
   <Authentication
-    v-else-if="$store.state.token == ''"
+    v-else-if="this.activePage == 'Authentication'"
+    @authorizationSuccess="authorizationSuccess"
   ></Authentication>
   <Timetable 
     v-else-if="this.activePage == 'Timetable'"
@@ -24,7 +25,7 @@
   import Edit from './components/Edit';
   import Authentication from './components/Authentication';
   import Overview from './components/Overview';
-  import {mapActions} from 'vuex';
+  import {mapActions, mapGetters} from 'vuex';
   export default {
     name: "App",
     components: {
@@ -35,15 +36,20 @@
     },
     data() {
       return {
-        activePage: "Timetable",
+        activePage: "Authentication",
         // activePage: "Overview",
         editDate: "",
         version: ""
       }
     },
+    computed: {
+      authenticationState(){
+        return (!(this.getToken() != '' && this.getLoading() == 0))
+      }
+    },
     methods: {
-
       ...mapActions(["fetchSchedule", "fetchServerVersion"]),
+      ...mapGetters(["getToken", "getLoading"]),
       async editSheduleOnDate(date){
         await this.fetchSchedule(date)        
         this.editDate = date;
@@ -52,6 +58,9 @@
       backToTimetable(){
         this.activePage = "Timetable";
         this.editDate = "";
+      },
+      authorizationSuccess(){
+        this.activePage = "Timetable";
       }
     },
     provide() {

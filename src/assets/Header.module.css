@@ -109,5 +109,19 @@
 .header__data {
     font-size: 20px;
     font-weight: 600;
-    padding-left: 7vw;
+}
+
+.buttonLeft{
+    border: none;
+}
+.buttonRight{
+    border: none
+}
+
+.dateDiv{
+    padding-right: 2vw;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+
 }

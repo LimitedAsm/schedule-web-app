@@ -3,31 +3,34 @@ import { createStore } from 'vuex'
 export default createStore({
   actions:{
     fetchLogin(context, user){
-      context.commit('updateErrorMessage', user.username)
+      if (user.username == "correct username" && user.password == "correct possword"){
+        context.commit('updateMessage', "you new token")
+      }
+      else{
+        context.commit('updateMessage', "Неверный логин или пароль")
+      }
     },
-    fetchAllEditInformation(){
+    synchronization1CServer(){
       return 
     },
     logOut(){
       return
     },
-    fetchAllEditInformation(){
-      return 
-    },
   },
   mutations:{
-    updateErrorMessage(state, errorMessage){
-      state.errorMessage = errorMessage
+    updateMessage(state, message){
+      state.message = message
     }
   },
   state() {
     return {
-      errorMessage: "test"
+      message: "test",
+      loading: 0
     }
   },
   getters:{
-    getErrorMessage: state => {
-      return state.errorMessage
+    getMessage: state => {
+      return state.message
     },
     getGroups(){
       return ["1", "2", "3"]
@@ -72,7 +75,7 @@ export default createStore({
       return "1"
     },
     getToken(){
-      return "1"
+      return ""
     }
   }
 })
