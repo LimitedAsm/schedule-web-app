@@ -2,6 +2,7 @@
 <Header
  :typeHeader="'timetable'"
  @getDates="getDates"
+ @backToAuthentication="backToAuthentication"
  :propDates="this.dates"
 ></Header>
 <div class="main main-timetable">
@@ -51,7 +52,8 @@ export default {
       }
   },
   emits: [
-    "editSheduleOnDate"
+    "editSheduleOnDate",
+    "backToAuthentication"
   ],
   computed:{
     plates(){
@@ -62,6 +64,9 @@ export default {
     ...mapGetters(["getPlates"]),
     editSheduleOnDate(date){
       this.$emit('editSheduleOnDate', date);
+    },
+    backToAuthentication(){
+      this.$emit('backToAuthentication');
     },
     getDates(shiftDate = 0){
       let fullShiftDate = shiftDate + this.shiftDate
@@ -98,18 +103,13 @@ export default {
           dates.push(date);
         }
       }
-      console.log(this.dates)
       this.dates = []
       this.dates.push(...dates)
       return dates
     },
   },
   created(){
-    // console.log(this.getDates())
-    console.log(this.dates)
     this.getDates(0)
-    // console.log(this.getDates())
-    console.log(this.dates)
   }
 }
 </script>

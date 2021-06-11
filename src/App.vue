@@ -8,16 +8,17 @@
   <Timetable 
     v-else-if="this.activePage == 'Timetable'"
     @editSheduleOnDate="editSheduleOnDate"
+    @backToAuthentication="backToAuthentication"
   ></Timetable>
   <Edit 
     v-else-if="this.activePage == 'Edit'"
     :editDate="this.editDate"
-    
+    @backToAuthentication="backToAuthentication"
     @backToTimetable="backToTimetable"
   ></Edit>
   <p class="serverVersion">server: {{ $store.getters.getServerVersion }}</p>
   <!-- <p class="version">clien: v{{ require('../package.json').version }}</p> -->
-  <p class="version">clien: {{ version }}</p>
+  <p class="version">client: {{ version }}</p>
 </template>
 
 <script>
@@ -42,11 +43,11 @@
         version: ""
       }
     },
-    computed: {
-      authenticationState(){
-        return (!(this.getToken() != '' && this.getLoading() == 0))
-      }
-    },
+    // computed: {
+    //   authenticationState(){
+    //     return (!(this.getToken() != '' && this.getLoading() == 0))
+    //   }
+    // },
     methods: {
       ...mapActions(["fetchSchedule", "fetchServerVersion"]),
       ...mapGetters(["getToken", "getLoading"]),
@@ -56,8 +57,13 @@
         this.activePage = "Edit";
       },
       backToTimetable(){
+        console.log("backToTimetable")
         this.activePage = "Timetable";
         this.editDate = "";
+      },
+      backToAuthentication(){
+        console.log("backToAuthentication")
+        this.activePage = "Authentication";
       },
       authorizationSuccess(){
         this.activePage = "Timetable";

@@ -60,3 +60,29 @@
 .onClear{
     grid-column:7
 }
+
+.group__name__block{
+    display: flex;
+    flex-direction: row;    
+}
+
+.group__type__select{
+    margin-left: 1vw;
+    height: 30px;
+
+    border-radius: 4px;
+    border: 1px solid #4fc1e9;
+    padding: 4px 8px;
+    color: #4fc1e9;
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    overflow: hidden;
+}

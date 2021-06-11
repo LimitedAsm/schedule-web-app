@@ -3,31 +3,28 @@
     :typeHeader="'edit'"
     @saveSchedule="saveSchedule"
     @backToTimetable="backToTimetable"
+    @backToAuthentication="backToAuthentication"
     :propDate="this.date"
-  >
-  </Header>
+  ></Header>
   <template v-if="$store.state.loading != 0">
     загрузка{{$store.state.loading}}
   </template>
   <div v-else>
     <div class="select__edit__block">
       <p class="select__text">Расписание звонков: </p>
-      <select class="select__edit">
+      <select class="select__edit" v-model="selectAlarm">
         <option 
+          selected
           v-for="alarm in this.alarms"
           :key="alarm"
           data-test="alarm"
         >{{alarm}}</option>
       </select>
     </div>
-
-    <!-- <div v-else class="groups"> -->
-
     <div class="groups" >
       <template
         v-for="group in this.groups"
         :key="group"
-        
       >
         <Group
           data-test="group"
@@ -53,12 +50,14 @@ export default {
     "editDate",
   ],
   emits: [
-    "backToTimetable"
+    "backToTimetable",
+    "backToAuthentication"
   ],
   data() {
     return {
       childrenFunction: [],
       date: this.editDate,
+      selectAlarm: "Стандартное"
     }
   },
   computed: {
@@ -76,11 +75,13 @@ export default {
       let date = new Date(this.date)
       let schedule = [];
       const scheduleDate = date.toISOString().slice(0, -5)
-      // console.log(scheduleDate)
       let informaion = {}
       let lineNumber = 0
       this.childrenFunction.forEach(element => {
         const lessonInfo = element.getFunc() ;
+        console.log(lessonInfo.delited)
+        if(lessonInfo.delited == false){
+
         lineNumber += 1
         let group = this.getGroupRefKey()(lessonInfo.group)
         let subject = this.getSubjectRefKey()(lessonInfo.subject)
@@ -139,13 +140,15 @@ export default {
           schedule.push(lesson)
           schedule.push(lessonSubgoupTwo)
         }
-        informaion = {
-          "scheduleDate": scheduleDate,
-          "alarmsScheduleKey": "f0c7b75a-a488-4d9b-a175-f8374de43184", 
-          "schedule": schedule
         }
       });
-      console.log(informaion);
+      informaion = {
+          "scheduleDate": scheduleDate,
+          "alarmsScheduleKey": this.selectAlarm, 
+          "schedule": schedule
+      }
+      console.log(informaion)
+      console.log(schedule)
       await fetch(
         this.getHost() + this.getVersion() + '/schedule/create',
         {
@@ -158,8 +161,9 @@ export default {
         }
       )
       .then(
-        response => {
-          if(response == "blabla"){
+        async response => {
+          const responseJSON = await response.json()
+          if(responseJSON.message == "success"){
             swal("Расписание успешно сохранено")
           }
           else{
@@ -170,11 +174,13 @@ export default {
             console.log('Error: ', reject)
             swal("Сервер недоступен обратитесь к системному администратору")
         })
-      // this.backToTimetable();
     },
     backToTimetable(){
       this.childrenFunction = [];
       this.$emit("backToTimetable");
+    },
+    backToAuthentication(){
+      this.$emit("backToAuthentication");
     },
     getChildrenFunction(getFunc, setFunc){
       this.childrenFunction.push({"getFunc": getFunc, "setFunc":setFunc})

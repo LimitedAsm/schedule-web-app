@@ -1,19 +1,28 @@
 <template>
   <div class="group">    
     <div class="grid__lesson">
-      <p class="group__name">{{ group }}</p>
-      <GroupHeader ></GroupHeader>
-      <template 
-        v-for="lesson in lessons"
-        :key="lesson"        
-      >
-        <Lesson 
-          :lessonNumber="lesson"
-          :group="group"
-          @shiftLessonUp="shiftLessonUp"
-          @shiftLessonDown="shiftLessonDown"
-          @cleaningLesson="cleaningLesson"
-        ></Lesson>
+      <div class="group__name__block">
+        <p class="group__name">{{ group }}</p>
+        <select class="group__type__select" v-model="groupType"> 
+          <option>Обычное расписание</option>
+          <option>Нет пар</option>
+          <!-- <option>Производственная практика</option> -->
+        </select>
+      </div>
+      <template v-if="groupType == 'Обычное расписание'">
+        <GroupHeader ></GroupHeader>
+        <template
+          v-for="lesson in lessons"
+          :key="lesson"
+        >
+          <Lesson 
+            :lessonNumber="lesson"
+            :group="group"
+            @shiftLessonUp="shiftLessonUp"
+            @shiftLessonDown="shiftLessonDown"
+            @cleaningLesson="cleaningLesson"
+          ></Lesson>
+        </template>
       </template>
     </div>
   </div>
@@ -33,6 +42,7 @@ export default {
   },
   data() {
     return {
+      groupType: "Обычное расписание",
       firstLesson: 1,
       amountLesson: 6,
       lessonFunction : {},

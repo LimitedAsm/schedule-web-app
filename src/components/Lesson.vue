@@ -102,35 +102,8 @@
     </div> 
   </div>   
       
-  <!-- <button 
-    class="option__btn"
-    v-on:click="handleSubgroupButton"
-  > -->
-
-
-    <!-- <input
-    class="checkbox"
-      v-bind:id="group + lessonNumber"
-      type="checkbox"
-      v-model="lesson.subgroup"
-    > -->
-
-  <!-- </button> -->
-
-  <!-- <label 
-    v-bind:for="group + lessonNumber"
-  ></label> -->
-
   <input type="checkbox" class="checkbox"  v-bind:id="group + ' ' + lessonNumber" v-model="lesson.subgroup"/>
   <label  v-bind:for="group + ' ' + lessonNumber"></label>
-
-<!-- <label class="checkbox">
-	<input type="checkbox" />
-	<div class="checkbox__text"></div>
-</label> -->
-
-<!-- v-bind:id="group + lessonNumber" -->
-
 
   <button 
     type="button" 
@@ -180,7 +153,7 @@ export default {
   name: "Lesson",
   props: [
     "lessonNumber",
-    "group"
+    "group",
   ],
   emits: [
     "shiftLessonUp",
@@ -202,6 +175,7 @@ export default {
         subjectSubgroup: "",
         subgroup: false,
       },
+      delited: false
     }
   },
   computed: {
@@ -242,6 +216,7 @@ export default {
     returnChildrenFunctionGet(){
       return(
         {
+          delited: this.delited,
           lessonNumber: this.lessonNumber,
           group: this.group,
           ...this.lesson
@@ -291,6 +266,9 @@ export default {
         this.lesson = {...lesson}
       });      
     }
+  },
+  unmounted(){
+    this.delited = true
   }
 }
 </script>

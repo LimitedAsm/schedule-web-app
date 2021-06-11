@@ -77,7 +77,6 @@ export default createStore({
                 if(responseJSON.data.hasDataChanged == true){
                     context.dispatch('fetchAllEditInformation')
                     context.commit('updateEdit');
-                    console.log(responseJSON)
                     context.commit('updateMessage', "Данные успешно обновлены");
                 }
                 else{
@@ -87,12 +86,12 @@ export default createStore({
             reject => {
                 console.log('Error: ', reject)
                 context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
-            }
-            );
+            });
         },
             
         logOut(context){
             context.commit('updateToken', {token: '', username: ''})
+            context.commit('updateEdit');
         },
         copyLesson(context, lesson){
             context.commit('updateCopiedLesson', lesson)
@@ -108,25 +107,19 @@ export default createStore({
         async fetchSchedule(context, date){
             const dateISO = new Date(date).toISOString()
             const fetchDate = dateISO.slice(0, -14)
-            // console.log(dateISO)
             const res = await fetch(
                 this.getters.getHost + this.getters.getVersion + '/schedule/get?date=' + fetchDate,
                 {
                     headers: {
                         "Authorization": "Token " + this.getters.getToken,
                     }
-                }
-            )
-            // console.log(res)
-            
+                }) 
             const scheduleJSON = await res.json();
-            // console.log(scheduleJSON)
             if(scheduleJSON.message == "not_found"){
                 context.commit('updateSchedule', "noSchedule")
             }
             else{
-                const schedule = scheduleJSON.data[0].schedule
-                // console.log(schedule)
+                const schedule = scheduleJSON.data.schedule
                 context.commit('updateSchedule', schedule)
             }
         },

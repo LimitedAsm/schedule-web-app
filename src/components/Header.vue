@@ -9,7 +9,7 @@
         />
         <template v-if="this.typeHeader == 'edit'">
           <button 
-            class="header__btn header__item"
+            class="header__btn header__item danger"
             v-on:click="backToTimetable"
           >Назад</button>
           <button 
@@ -28,7 +28,7 @@
         <button  v-on:click="hendlerShiftDateFuter" class="buttonRight"><img src="../assets/arrow_forward.svg"></button>
       </div>
       <div class="header__right">
-        <button class="header__btn header__item" v-on:click="hendlerSynchronization" >Обновление данных 1С</button>
+        <button class="header__btn danger header__item" v-on:click="hendlerSynchronization">Обновление данных 1С</button>
         <p class="header__user">{{ username }}</p>
         <button 
           class="header__btn danger"
@@ -47,7 +47,8 @@ export default {
   emits: [
     "saveSchedule",
     "backToTimetable",
-    "getDates"
+    "getDates",
+    "backToAuthentication",
   ],
   props: [
     "typeHeader",
@@ -69,28 +70,70 @@ export default {
     ...mapActions(["logOut", "synchronization1CServer"]),
     ...mapGetters(["getHost", "getVersion", "getToken", "getUsername","getMessage"]),
     handleLogOut(){
-      this.backToTimetable()
-      this.logOut()
-    },
-    saveSchedule(){
-      this.$emit("saveSchedule")
+      swal({
+        title: "Вы уверенны что хотите выйти из аккаунта",
+        icon: "warning",
+        buttons: {
+          exit: "Выйти",
+          cansel: "Отмена"
+        },
+        dangerMode: true,
+      })
+      .then((value) => {
+        if(value == "exit"){
+          this.$emit("backToAuthentication");
+          this.logOut()        
+        }
+      }) 
     },
     backToTimetable(){
-      this.$emit("backToTimetable");
+      swal({
+        title: "Возврат к списку расписаний сбросит весь прогресс редактирования, сохранитесть перед уходом",
+        icon: "warning",
+        buttons: {
+          exit: "Выйти",
+          cansel: "Отмена"
+        },
+        dangerMode: true,
+      })
+      .then((value) => {
+        if(value == "exit"){
+          this.$emit("backToTimetable");
+        }
+      })
     },
-
     async hendlerSynchronization(){
-      await this.synchronization1CServer()
-      console.log(this.getMessage())
-      swal(this.getMessage())
-      console.log(this.getMessage())
+      if(this.typeHeader == "edit"){
+        swal({
+          title: "Вы уверенны что хотите получить обновленные данные из 1С, это может привести к потере прогресса редактирования расписания",
+          icon: "warning",
+          buttons: {
+            sync: "Обновить",
+            cansel: "Отмена"
+          },
+          dangerMode: true,
+        })
+        .then(async(value) => {
+          if(value == "sync"){
+            await this.synchronization1CServer()
+            swal(this.getMessage())
+          }
+        })
+      }
+      else{
+        await this.synchronization1CServer()
+        swal(this.getMessage())
+      }
     },
     hendlerShiftDatePast(){
       this.$emit("getDates", -7)
     },
     hendlerShiftDateFuter(){
       this.$emit("getDates", 7)
-    }
+    },
+    saveSchedule(){
+      this.$emit("saveSchedule")
+    },
   },
 }
 </script>
