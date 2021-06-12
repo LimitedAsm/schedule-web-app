@@ -52,7 +52,8 @@ export default createStore({
                     }
                     else{
                         const token = tokenJSON.data.token
-                        context.commit('updateToken', {token: token,username: user.username});
+                        await context.commit('updateToken', {token: token,username: user.username});
+                        context.dispatch('synchronization1CServer')
                     }
                 },
 

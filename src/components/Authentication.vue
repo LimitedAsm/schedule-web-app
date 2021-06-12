@@ -25,7 +25,13 @@ export default {
   ],
   computed:{
     message(){
-      return this.getMessage()
+      let message = this.getMessage()
+      if(message == "Данные успешно обновлены" || message == "Новых данных не обнаруженно"){
+        return ""
+      }
+      else{
+        return this.getMessage()
+      }
     }
   },
   methods: {
@@ -33,10 +39,13 @@ export default {
     ...mapGetters(["getMessage"]),
     async handleAuthorization()  {
       await this.fetchLogin(this.user);
-      await this.synchronization1CServer();
-      if(this.message == "" || this.message == "Данные успешно обновлены" || this.message == "Новых данных не обнаруженно"){
-        this.$emit("authorizationSuccess");
+      if(this.message == ""){
+        await this.synchronization1CServer()
+        if(this.message == ""){
+          this.$emit("authorizationSuccess");
+        }
       }
+      
     },
   },
 };
