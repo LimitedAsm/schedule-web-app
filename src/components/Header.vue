@@ -71,7 +71,7 @@ export default {
     ...mapGetters(["getHost", "getVersion", "getToken", "getUsername","getMessage"]),
     handleLogOut(){
       swal({
-        title: "Вы уверенны что хотите выйти из аккаунта",
+        title: "Вы уверенны что хотите выйти из аккаунта?",
         icon: "warning",
         buttons: {
           exit: "Выйти",
@@ -88,7 +88,7 @@ export default {
     },
     backToTimetable(){
       swal({
-        title: "Возврат к списку расписаний сбросит весь прогресс редактирования, сохранитесть перед уходом",
+        title: "Вы уверенны что хотите вернутся к списку расписаний. Несохраненное расписание будет сброшенно.",
         icon: "warning",
         buttons: {
           exit: "Выйти",
@@ -105,7 +105,7 @@ export default {
     async hendlerSynchronization(){
       if(this.typeHeader == "edit"){
         swal({
-          title: "Вы уверенны что хотите получить обновленные данные из 1С, это может привести к потере прогресса редактирования расписания",
+          title: "Вы уверенны что хотите получить обновленные данные из 1С, это может привести к потере прогресса редактирования расписания!",
           icon: "warning",
           buttons: {
             sync: "Обновить",
@@ -132,7 +132,25 @@ export default {
       this.$emit("getDates", 7)
     },
     saveSchedule(){
-      this.$emit("saveSchedule")
+      swal({
+          title: "Это окончательный вариант расписания?",
+          icon: "warning",
+          buttons: {
+            true: "Да",
+            false : "Нет",
+            cansel : "Отмена",
+          },
+          dangerMode: true,
+        })
+        .then(async(value) => {
+          if(value == "true"){
+            this.$emit("saveSchedule", 1)
+          }
+          else if(value == "false"){
+            this.$emit("saveSchedule", 0)
+          }
+          
+        })
     },
   },
 }

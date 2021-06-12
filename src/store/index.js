@@ -52,8 +52,9 @@ export default createStore({
                     }
                     else{
                         const token = tokenJSON.data.token
-                        await context.commit('updateToken', {token: token,username: user.username});
-                        context.dispatch('synchronization1CServer')
+                        context.commit('updateToken', token);
+                        context.commit('updateUsername', user.username);
+                        context.dispatch('fetchScheduleIsFinalList')
                     }
                 },
 
@@ -62,6 +63,7 @@ export default createStore({
                     context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
                 }
             );
+            
         },   
         async synchronization1CServer(context){
             await fetch(
@@ -91,7 +93,8 @@ export default createStore({
         },
             
         logOut(context){
-            context.commit('updateToken', {token: '', username: ''})
+            context.commit('updateToken','')
+            context.commit('updateUsername','')
             context.commit('updateEdit');
         },
         copyLesson(context, lesson){
@@ -124,6 +127,28 @@ export default createStore({
                 context.commit('updateSchedule', schedule)
             }
         },
+        async fetchScheduleIsFinalList(context){
+            await fetch(
+                // this.getters.getHost + this.getters.getVersion + '/schedule/list?is_final=true',   
+                this.getters.getHost + this.getters.getVersion + '/schedule/list',                    
+                 
+                {
+                    headers: {
+                        "Authorization": "Token " + this.getters.getToken
+                    }
+                }
+            )
+            .then(
+            async response => {
+                const responseJSON = await response.json();
+                console.log(responseJSON)
+                context.commit('updateScheduleIsFinalList', responseJSON.data);                
+            },
+            reject => {
+                console.log('Error: ', reject)
+                context.commit('updateMessage', "Сервер недоступен обратитесь к системному администратору");
+            });
+        }
     },
     mutations:{
         updateEmployees(state, employees){
@@ -159,8 +184,11 @@ export default createStore({
             state.scheduleTemplate = schedule_templates
         },
 
-        updateToken(state, {token, username}){
+        updateToken(state, token){
             state.token = token;
+            state.message = "";
+        },
+        updateUsername(state, username){
             state.username = username;
             state.message = "";
         },
@@ -183,6 +211,9 @@ export default createStore({
         },
         updateServerVersion(state, serverVersion){
             state.serverVersion = serverVersion.server_version
+        },
+        updateScheduleIsFinalList(state, scheduleIsFinalList){
+            state.scheduleIsFinalList = scheduleIsFinalList
         }
     },
     state() {
@@ -201,7 +232,8 @@ export default createStore({
             copiedLesson: "notOneCopy",
             schedule: [],
             serverVersion: "",
-            plates: []
+            plates: [],
+            scheduleIsFinalList: []
         }
     },
     
@@ -294,7 +326,7 @@ export default createStore({
             })
             return res
         },
-        getAlarmsRefKey: state => Description => {
+        getAlarmRefKey: state => Description => {
             let res = ""
             state.alarms.forEach(element =>{
                 if(element.Description == Description){
@@ -366,6 +398,9 @@ export default createStore({
         },
         getLoading: state => {
             return state.loading
+        },
+        getScheduleIsFinalList: state => {
+            return state.scheduleIsFinalList
         }
 
     },

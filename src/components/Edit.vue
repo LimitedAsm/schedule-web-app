@@ -70,8 +70,8 @@ export default {
   },
   methods: {
     ...mapGetters(["getVersion","getGroupRefKey", "getRoomRefKey", "getSubjectRefKey",
-     "getEmployeeRefKey", "getHost", "getToken", "getAlarms", "getGroups"]),
-    async saveSchedule(){
+     "getEmployeeRefKey", "getAlarmRefKey", "getHost", "getToken", "getAlarms", "getGroups"]),
+    async saveSchedule(isFinal){
       let date = new Date(this.date)
       let schedule = [];
       const scheduleDate = date.toISOString().slice(0, -5)
@@ -79,9 +79,7 @@ export default {
       let lineNumber = 0
       this.childrenFunction.forEach(element => {
         const lessonInfo = element.getFunc() ;
-        console.log(lessonInfo.delited)
         if(lessonInfo.delited == false){
-
         lineNumber += 1
         let group = this.getGroupRefKey()(lessonInfo.group)
         let subject = this.getSubjectRefKey()(lessonInfo.subject)
@@ -143,12 +141,12 @@ export default {
         }
       });
       informaion = {
+          "is_final": isFinal,
           "scheduleDate": scheduleDate,
-          "alarmsScheduleKey": this.selectAlarm, 
+          "alarmsScheduleKey": this.getAlarmRefKey()(this.selectAlarm), 
           "schedule": schedule
       }
       console.log(informaion)
-      console.log(schedule)
       await fetch(
         this.getHost() + this.getVersion() + '/schedule/create',
         {

@@ -57,12 +57,10 @@
         this.activePage = "Edit";
       },
       backToTimetable(){
-        console.log("backToTimetable")
         this.activePage = "Timetable";
         this.editDate = "";
       },
       backToAuthentication(){
-        console.log("backToAuthentication")
         this.activePage = "Authentication";
       },
       authorizationSuccess(){
