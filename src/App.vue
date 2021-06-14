@@ -38,16 +38,10 @@
     data() {
       return {
         activePage: "Authentication",
-        // activePage: "Overview",
         editDate: "",
         version: ""
       }
     },
-    // computed: {
-    //   authenticationState(){
-    //     return (!(this.getToken() != '' && this.getLoading() == 0))
-    //   }
-    // },
     methods: {
       ...mapActions(["fetchSchedule", "fetchServerVersion"]),
       ...mapGetters(["getToken", "getLoading"]),

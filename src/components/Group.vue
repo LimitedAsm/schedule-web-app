@@ -1,21 +1,18 @@
 <template>
-  <div class="group">    
+  <div class="group">
     <div class="grid__lesson">
       <div class="group__name__block">
         <p class="group__name">{{ group }}</p>
-        <select class="group__type__select" v-model="groupType"> 
+        <select class="group__type__select" v-model="groupType">
           <option>Обычное расписание</option>
           <option>Нет пар</option>
           <!-- <option>Производственная практика</option> -->
         </select>
       </div>
       <template v-if="groupType == 'Обычное расписание'">
-        <GroupHeader ></GroupHeader>
-        <template
-          v-for="lesson in lessons"
-          :key="lesson"
-        >
-          <Lesson 
+        <GroupHeader></GroupHeader>
+        <template v-for="lesson in lessons" :key="lesson">
+          <Lesson
             :lessonNumber="lesson"
             :group="group"
             @shiftLessonUp="shiftLessonUp"
@@ -30,12 +27,10 @@
 
 <script>
 import Lesson from "./Lesson";
-import GroupHeader from "./GroupHeader"
+import GroupHeader from "./GroupHeader";
 export default {
   name: "Group",
-  props: [
-    "group"
-  ],
+  props: ["group"],
   components: {
     Lesson,
     GroupHeader,
@@ -45,7 +40,7 @@ export default {
       groupType: "Обычное расписание",
       firstLesson: 1,
       amountLesson: 6,
-      lessonFunction : {},
+      lessonFunction: {},
       clearLesson: {
         room: "",
         employee: "",
@@ -54,50 +49,57 @@ export default {
         employeeSubgroup: "",
         subjectSubgroup: "",
         subgroup: false,
-      }
-    }
+      },
+    };
   },
   computed: {
-    lessons(){
-      let lessons = []
-      for (let i = this.firstLesson; i <= this.amountLesson + this.firstLesson - 1; i++) { 
-        lessons.push(i)
+    lessons() {
+      let lessons = [];
+      for (
+        let i = this.firstLesson;
+        i <= this.amountLesson + this.firstLesson - 1;
+        i++
+      ) {
+        lessons.push(i);
       }
-      return lessons
+      return lessons;
     },
   },
   provide() {
-    return{
-      getLessonFunction: this.getLessonFunction
-    }
+    return {
+      getLessonFunction: this.getLessonFunction,
+    };
   },
   methods: {
-    getLessonFunction(getFunc, setFunc, lessonNumber){
-      this.lessonFunction[lessonNumber] = {"getFunc": getFunc, "setFunc":setFunc}
+    getLessonFunction(getFunc, setFunc, lessonNumber) {
+      this.lessonFunction[lessonNumber] = {
+        getFunc: getFunc,
+        setFunc: setFunc,
+      };
     },
-    shiftLessonUp(lessonNumber){
-      let firstLesson = this.firstLesson
-      for(let i = firstLesson; i < lessonNumber; i++){
+    shiftLessonUp(lessonNumber) {
+      let firstLesson = this.firstLesson;
+      for (let i = firstLesson; i < lessonNumber; i++) {
         let lessonInfo = this.lessonFunction[i + 1].getFunc();
         this.lessonFunction[i].setFunc(lessonInfo);
       }
-      this.cleaningLesson(lessonNumber)
+      this.cleaningLesson(lessonNumber);
     },
-    shiftLessonDown(lessonNumber){
-      let lastLesson = this.amountLesson
-      for(let i = lastLesson; i > lessonNumber; i--){
+    shiftLessonDown(lessonNumber) {
+      let lastLesson = this.amountLesson;
+      for (let i = lastLesson; i > lessonNumber; i--) {
         let lessonInfo = this.lessonFunction[i - 1].getFunc();
         this.lessonFunction[i].setFunc(lessonInfo);
       }
-      this.cleaningLesson(lessonNumber)
+      this.cleaningLesson(lessonNumber);
     },
-    cleaningLesson(lessonNumber){
+    cleaningLesson(lessonNumber) {
       this.lessonFunction[lessonNumber].setFunc(this.clearLesson);
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
-@import '../assets/Group.module.css';
+@import "../assets/Group.module.css";
 </style>
