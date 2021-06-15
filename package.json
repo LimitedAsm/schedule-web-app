@@ -41,7 +41,8 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "jest/globals": true,
+      "jest": true,
+      "globals": true,
       "node": true
     },
     "extends": [

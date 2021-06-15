@@ -47,9 +47,8 @@ export default {
       return this.getPlates();
     },
     isFinalList() {
-      
-      console.log( this.getScheduleIsFinalList());
-      return ["2021-06-17", "2021-06-18"]
+      // console.log( this.getScheduleIsFinalList());
+      return this.getScheduleIsFinalList()
     }
   },
   methods: {

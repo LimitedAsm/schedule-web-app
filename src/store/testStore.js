@@ -79,5 +79,8 @@ export default createStore({
     getToken() {
       return "";
     },
+    getScheduleIsFinalList(){
+      return ["1", "2", "3"]
+    }
   },
 });
