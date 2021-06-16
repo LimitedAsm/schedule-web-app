@@ -27,11 +27,11 @@
             {{ room }}
           </option>
         </datalist>
-        <input
+        <!-- <input
           list="идентификатор5"
           placeholder="Заметки"
           v-model="lesson.note"
-        />
+        /> -->
       </div>
       <template v-if="lesson.subgroup">
         <div class="subgroup main__group">

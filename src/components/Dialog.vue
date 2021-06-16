@@ -1,22 +1,17 @@
 <template>
-<div></div>
+  <div></div>
 </template>
 
 <script>
-
-import swal from 'sweetalert';
+import swal from "sweetalert";
 swal("Hello world!");
 
 export default {
   name: "Authentication",
   data() {
-    return {
-
-    };
+    return {};
   },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
