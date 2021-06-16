@@ -150,7 +150,9 @@ export default createStore({
     },
     async fetchScheduleIsFinalList(context) {
       await fetch(
-        this.getters.getHost + this.getters.getVersion + '/schedule/list?is_final=1',
+        this.getters.getHost +
+          this.getters.getVersion +
+          "/schedule/list?is_final=1",
         // this.getters.getHost + this.getters.getVersion + "/schedule/list",
         {
           headers: {
@@ -159,13 +161,11 @@ export default createStore({
         }
       ).then(
         async (response) => {
-          
           const responseJSON = await response.json();
-          if(responseJSON.message == "success"){
+          if (responseJSON.message == "success") {
             console.log(responseJSON.data);
             context.commit("updateScheduleIsFinalList", responseJSON.data);
-          }
-          else{
+          } else {
             console.log("Error load schedule list: ", responseJSON);
           }
         },
@@ -242,12 +242,12 @@ export default createStore({
       state.serverVersion = serverVersion.server_version;
     },
     updateScheduleIsFinalList(state, scheduleIsFinalList) {
-      let newList = []
-      scheduleIsFinalList.forEach(element => {
-        if(element.is_final == true){
-          newList.push(element.date)
+      let newList = [];
+      scheduleIsFinalList.forEach((element) => {
+        if (element.is_final == true) {
+          newList.push(element.date);
         }
-      })
+      });
       state.scheduleIsFinalList = newList;
     },
   },

@@ -27,9 +27,9 @@
             {{ room }}
           </option>
         </datalist>
-        <input 
-          list="идентификатор5" 
-          placeholder="Заметки" 
+        <input
+          list="идентификатор5"
+          placeholder="Заметки"
           v-model="lesson.note"
         />
       </div>
