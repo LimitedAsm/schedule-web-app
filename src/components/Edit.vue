@@ -150,7 +150,6 @@ export default {
         alarmsScheduleKey: this.getAlarmRefKey()(this.selectAlarm),
         schedule: schedule,
       };
-      console.log(informaion);
       await fetch(this.getHost() + this.getVersion() + "/schedule/create", {
         method: "POST",
         headers: {

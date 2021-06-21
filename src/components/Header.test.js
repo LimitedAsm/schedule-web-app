@@ -4,10 +4,6 @@ import testStore from "../store/testStore.js";
 
 const globalObj = {
   plugins: [testStore],
-  // provide: {
-  //   date: "date",
-  //   dates: ["date 1", "date 2", "date 3"],
-  // },
 };
 
 const wrapper = mount(Header, {

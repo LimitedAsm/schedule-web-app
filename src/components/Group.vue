@@ -6,7 +6,6 @@
         <select class="group__type__select" v-model="groupType">
           <option>Обычное расписание</option>
           <option>Нет пар</option>
-          <!-- <option>Производственная практика</option> -->
         </select>
       </div>
       <template v-if="groupType == 'Обычное расписание'">

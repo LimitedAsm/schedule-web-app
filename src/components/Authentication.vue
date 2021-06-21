@@ -1,7 +1,7 @@
 <template>
   <div v-show="this.authorizationLoading == true">
-      <div id="spin"></div>
-      <div id="spinBackground"></div>
+    <div id="spin"></div>
+    <div id="spinBackground"></div>
   </div>
   <div class="authenticationForm">
     <div class="authenticationLable">Вход</div>
@@ -35,7 +35,7 @@ export default {
         username: "administrator",
         password: "",
       },
-      authorizationLoading: false
+      authorizationLoading: false,
     };
   },
   emits: ["authorizationSuccess"],
@@ -56,8 +56,8 @@ export default {
     ...mapActions(["fetchLogin", "synchronization1CServer"]),
     ...mapGetters(["getMessage", "getLoading", "getToken"]),
     async handleAuthorization() {
-      this.authorizationLoading = true 
-      this.createSpiner()
+      this.authorizationLoading = true;
+      this.createSpiner();
       await this.fetchLogin(this.user);
       if (this.message == "") {
         await this.synchronization1CServer();
@@ -65,9 +65,9 @@ export default {
           this.$emit("authorizationSuccess");
         }
       }
-      this.authorizationLoading = false
+      this.authorizationLoading = false;
     },
-    createSpiner(){
+    createSpiner() {
       const opts = {
         lines: 13, // The number of lines to draw
         length: 25, // The length of each line
@@ -88,13 +88,12 @@ export default {
         position: "absolute", // Element positioning
       };
       const target = document.getElementById("spin");
-      console.log(target)
       new Spinner(opts).spin(target);
-    }    
+    },
   },
   mounted() {
     this.createSpiner();
-  }
+  },
 };
 </script>
 

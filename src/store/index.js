@@ -153,7 +153,6 @@ export default createStore({
         this.getters.getHost +
           this.getters.getVersion +
           "/schedule/list?is_final=1",
-        // this.getters.getHost + this.getters.getVersion + "/schedule/list",
         {
           headers: {
             Authorization: "Token " + this.getters.getToken,
@@ -163,7 +162,6 @@ export default createStore({
         async (response) => {
           const responseJSON = await response.json();
           if (responseJSON.message == "success") {
-            console.log(responseJSON.data);
             context.commit("updateScheduleIsFinalList", responseJSON.data);
           } else {
             console.log("Error load schedule list: ", responseJSON);

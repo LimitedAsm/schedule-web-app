@@ -47,9 +47,8 @@ export default {
       return this.getPlates();
     },
     isFinalList() {
-      // console.log( this.getScheduleIsFinalList());
-      return this.getScheduleIsFinalList()
-    }
+      return this.getScheduleIsFinalList();
+    },
   },
   methods: {
     ...mapGetters(["getPlates", "getScheduleIsFinalList"]),

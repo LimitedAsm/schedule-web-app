@@ -1,6 +1,4 @@
 <template>
-  <!-- <div class="lesson__info"> -->
-
   <div class="main__info" data-test="lesson">
     <p class="lesson__number">{{ lessonNumber }}</p>
     <div class="select__menu">
@@ -27,11 +25,6 @@
             {{ room }}
           </option>
         </datalist>
-        <!-- <input
-          list="идентификатор5"
-          placeholder="Заметки"
-          v-model="lesson.note"
-        /> -->
       </div>
       <template v-if="lesson.subgroup">
         <div class="subgroup main__group">
@@ -67,10 +60,6 @@
               {{ room }}
             </option>
           </datalist>
-          <!-- <input  
-            placeholder="Заметки" 
-            v-model="lesson.noteSubgroup"
-          /> -->
         </div>
       </template>
     </div>
@@ -206,7 +195,6 @@ export default {
       );
   },
   mounted() {
-    // console.log(this.getSchedule())
     if (this.getSchedule() != "noSchedule") {
       this.getSchedule().forEach((schedule) => {
         let lesson = this.lesson;
