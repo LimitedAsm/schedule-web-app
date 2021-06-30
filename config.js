@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 const config = {
   PROTOCOL: "http",
-  HOST: "127.0.0.1",
+  HOST: "95.79.201.144",
   PORT: "8000",
   VERSION: "v1",
 };
